@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.be.mesh.spring.MeshConfiguration
+org.springframework.context.ApplicationListener=\
+io.be.mesh.spring.MeshSpringApplicationContext
+org.springframework.boot.env.EnvironmentPostProcessor=\
+io.be.mesh.spring.MeshEnvironmentPostProcessor

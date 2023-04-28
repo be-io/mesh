@@ -1,0 +1,25 @@
+consumer:
+  address: 0.0.0.0
+  enableKeepAlive: true
+  keepAliveTime: 12m
+  keepAliveTimeout: 12m
+  keepAliveWithoutCalls: true
+  shutdownGracePeriod: 5s
+  maxInboundMessageSize: 64m
+  fullStreamDecompression: true
+  immediateConnectTimeout: 5s
+provider:
+  address: 0.0.0.0
+  port: 570
+  shutdownGracePeriod: 30s
+  enableKeepAlive: true
+  keepAliveTime: 12m
+  keepAliveTimeout: 12m
+  permitKeepAliveTime: 12m
+  permitKeepAliveWithoutCalls: true
+  maxConnectionIdle: 8
+  maxConnectionAge: 12m
+  maxConnectionAgeGrace: 12m
+  maxInboundMessageSize: 64m
+  maxInboundMetadataSize: 64m
+  reflectionServiceEnabled: true

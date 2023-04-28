@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2000, 2023, trustbe and/or its affiliates. All rights reserved.
+ * TRUSTBE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
+ */
+
+/**
+ * @author coyzeng@gmail.com
+ */
+module com.jiumi.mesh {
+    requires spring.context;
+    requires lombok;
+    requires com.hazelcast.core;
+    requires logback.classic;
+    requires logback.core;
+    requires com.google.gson;
+    requires com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires xstream;
+    requires org.yaml.snakeyaml;
+    requires simpleclient;
+    requires com.github.oshi;
+    requires simpleclient.hotspot;
+    requires org.bouncycastle.provider;
+    requires org.bouncycastle.pkix;
+    requires grpc.netty;
+    requires grpc.stub;
+    requires com.google.common;
+    requires grpc.api;
+    requires io.netty.transport;
+    requires spring.core;
+    requires grpc.context;
+    requires jsr305;
+    requires com.google.protobuf;
+    requires grpc.core;
+    requires io.netty.transport.classes.epoll;
+    requires io.netty.transport.unix.common;
+    requires org.slf4j;
+    requires com.thoughtworks.qdox;
+    requires javassist;
+    requires java.sql;
+    requires java.compiler;
+    requires spring.beans;
+    exports com.jiumi.mesh.annotate;
+    exports com.jiumi.mesh.boost;
+    exports com.jiumi.mesh.cause;
+    exports com.jiumi.mesh.codec;
+    exports com.jiumi.mesh.collector;
+    exports com.jiumi.mesh.crypt;
+    exports com.jiumi.mesh.grpc;
+    exports com.jiumi.mesh.http;
+    exports com.jiumi.mesh.mpc;
+    exports com.jiumi.mesh.prsim;
+    exports com.jiumi.mesh.schema;
+    exports com.jiumi.mesh.spring;
+    exports com.jiumi.mesh.struct;
+    exports com.jiumi.mesh.system;
+    exports com.jiumi.mesh.tool;
+}

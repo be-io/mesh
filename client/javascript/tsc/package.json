@@ -1,0 +1,38 @@
+{
+  "name": "@mesh/tsc",
+  "version": "0.0.1",
+  "description": "An esbuild plugin which uses tsc to compile typescript files.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mesh/mesh.git"
+  },
+  "keywords": [
+    "esbuild",
+    "esbuild-plugin",
+    "tsc",
+    "typescript"
+  ],
+  "scripts": {
+    "build": "tsc && vite build"
+  },
+  "author": "coyzeng@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mesh/mesh/issues"
+  },
+  "homepage": "https://github.com/mesh/mesh#readme",
+  "dependencies": {
+    "@types/node": "^18.11.18",
+    "@types/strip-comments": "^2.0.1",
+    "strip-comments": "^2.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4"
+  },
+  "peerDependencies": {
+    "typescript": "^4.9.4"
+  }
+}

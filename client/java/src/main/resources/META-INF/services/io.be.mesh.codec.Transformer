@@ -1,0 +1,4 @@
+io.be.mesh.codec.Transformers$DateTransformer
+io.be.mesh.codec.Transformers$LocalDateTimeTransformer
+io.be.mesh.codec.Transformers$LocalDateTransformer
+io.be.mesh.codec.Transformers$LocalTimeTransformer

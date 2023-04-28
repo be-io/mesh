@@ -1,0 +1,22 @@
+syntax = "proto3";
+package com.be.mesh.client.codec.proto;
+option go_package = "/proto4";
+
+message InBound {
+  map<string, string> attachments = 1;
+  map<int32, bytes> arguments = 2;
+}
+
+message OutBound {
+  string code = 1;
+  string message = 2;
+  Cause cause = 3;
+  bytes content = 4;
+}
+
+message Cause {
+  string name = 1;
+  string pos = 2;
+  string text = 3;
+  bytes buff = 4;
+}

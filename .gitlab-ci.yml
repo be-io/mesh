@@ -1,0 +1,18 @@
+image: $REGISTRY_URL/cosmos/ci:latest
+
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - make image
+  only:
+    - dev
+    - /^dev-.*$/
+    - /^feature\/\d+\.\d+\.\d+$/
+    - /^feature\/\d+\.\d+\.\d+\.\d+$/
+    - /^release\/\d+\.\d+\.\d+$/
+    - /^release\/\d+\.\d+\.\d+\.\d+$/
+  tags:
+    - k8s-ci

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package types;
+
+option go_package = "github.com/be-io/mesh/client/golang/test";
+option java_package = "com.be.mesh.client.codec";
+
+message Body {
+  double a = 1;
+  float b = 2;
+  int32 c = 3;
+  int64 d = 4;
+  uint32 e = 5;
+  uint64 f = 6;
+  sint32 g = 7;
+  sint64 h = 8;
+  fixed32 i = 9;
+  fixed64 j = 10;
+  sfixed32 k = 11;
+  sfixed64 l = 12;
+  bool m = 13;
+  string n = 14;
+  bytes o = 15;
+  map<string, string> p = 16;
+  repeated int32 q = 17 [packed = true];
+  Body r = 18;
+  map<string, Body> s = 19;
+  repeated Body t = 20;
+}
+
+message Message {
+  double a = 1;
+  float b = 2;
+  int32 c = 3;
+  int64 d = 4;
+  uint32 e = 5;
+  uint64 f = 6;
+  sint32 g = 7;
+  sint64 h = 8;
+  fixed32 i = 9;
+  fixed64 j = 10;
+  sfixed32 k = 11;
+  sfixed64 l = 12;
+  bool m = 13;
+  string n = 14;
+  bytes o = 15;
+  map<string, string> p = 16;
+  repeated int32 q = 17 [packed = true];
+  Body r = 18;
+  map<string, Body> s = 19;
+  repeated Body t = 20;
+}
