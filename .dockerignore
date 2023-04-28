@@ -1,0 +1,13 @@
+/.git/
+/**/target/
+/**/.venv
+/**/dist
+/**/.pytest_cache
+/**/node_modules
+/**/.idea
+/**/.gradle
+/**/bin
+/**/out
+/**/*.iml
+/**/*.log
+/**/*.DS_Store

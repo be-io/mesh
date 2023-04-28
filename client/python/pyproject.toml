@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "imesh"
+version = "0.0.16"
+description = "A lightweight, distributed, relational network architecture for MPC."
+authors = ["coyzeng <coyzeng@gmail.com>"]
+maintainers = ["coyzeng <coyzeng@gmail.com>"]
+packages = [{ include = "mesh" }]
+license = "LICENSE"
+readme = "README.md"
+homepage = "https://github.com/be-io/mesh"
+repository = "https://github.com/be-io/mesh"
+documentation = "https://github.com/be-io/mesh"
+keywords = ["servicemesh", "rpc", "codec", "protocol", "cluster", "registry", "mesh"]
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Natural Language :: English",
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9"
+]
+[tool.poetry.dependencies]
+python = "^3.6"
+protobuf = "^3.14.0"
+grpcio = "^1.43.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "aliyun"
+url = "https://mirrors.aliyun.com/pypi/simple/"
+default = true

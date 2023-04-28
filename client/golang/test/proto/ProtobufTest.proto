@@ -1,0 +1,18 @@
+syntax = "proto3";
+package com.be.mesh.client.codec.proto;
+option go_package = "/proto";
+
+message PsiExecuteRequest {
+  string sourcePartnerCode = 1;
+  string taskId = 2;
+  string authorityCode = 3;
+  string index = 4;
+  repeated bytes encodeData = 5;
+}
+
+message PsiExecuteResponse {
+  string stage = 1;
+  string taskId = 2;
+  repeated bytes maskData = 3;
+  repeated bytes encoders = 4;
+}

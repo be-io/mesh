@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2000, 2023, trustbe and/or its affiliates. All rights reserved.
+ * TRUSTBE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
+ */
+
+/**
+ * @author coyzeng@gmail.com
+ */
+module com.be.mesh.client {
+    requires spring.context;
+    requires lombok;
+    requires com.hazelcast.core;
+    requires logback.classic;
+    requires logback.core;
+    requires com.google.gson;
+    requires com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires xstream;
+    requires org.yaml.snakeyaml;
+    requires simpleclient;
+    requires com.github.oshi;
+    requires simpleclient.hotspot;
+    requires org.bouncycastle.provider;
+    requires org.bouncycastle.pkix;
+    requires grpc.netty;
+    requires grpc.stub;
+    requires com.google.common;
+    requires grpc.api;
+    requires io.netty.transport;
+    requires spring.core;
+    requires grpc.context;
+    requires jsr305;
+    requires com.google.protobuf;
+    requires grpc.core;
+    requires io.netty.transport.classes.epoll;
+    requires io.netty.transport.unix.common;
+    requires org.slf4j;
+    requires com.thoughtworks.qdox;
+    requires javassist;
+    requires java.sql;
+    requires java.compiler;
+    requires spring.beans;
+    exports com.be.mesh.client.annotate;
+    exports com.be.mesh.client.boost;
+    exports com.be.mesh.client.cause;
+    exports com.be.mesh.client.codec;
+    exports com.be.mesh.client.collector;
+    exports com.be.mesh.client.crypt;
+    exports com.be.mesh.client.grpc;
+    exports com.be.mesh.client.http;
+    exports com.be.mesh.client.mpc;
+    exports com.be.mesh.client.prsim;
+    exports com.be.mesh.client.schema;
+    exports com.be.mesh.client.spring;
+    exports com.be.mesh.client.struct;
+    exports com.be.mesh.client.system;
+    exports com.be.mesh.client.tool;
+}

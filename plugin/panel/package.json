@@ -1,0 +1,69 @@
+{
+  "name": "mesh",
+  "version": "1.0.0",
+  "homepage": "https://github.com/be-io/mesh",
+  "description": "A lightweight, distributed, relational network architecture for MPC",
+  "repository": "github.com/be-io/mesh",
+  "author": "coyzeng@gmail.com",
+  "maintainers": [
+    "coyzeng@gmail.com"
+  ],
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@antv/x6": "^2.11.1",
+    "@codingame/monaco-vscode-api": "^1.79.3",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/public-sans": "^5.0.3",
+    "@fontsource/roboto": "^5.0.3",
+    "@mesh/mesh": "workspace:*",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/lab": "^5.0.0-alpha.134",
+    "@mui/material": "^5.13.5",
+    "@tremor/react": "^3.2.2",
+    "axios": "^1.4.0",
+    "bizcharts": "^4.1.22",
+    "formik": "^2.4.2",
+    "markmap-common": "^0.14.2",
+    "markmap-lib": "^0.14.4",
+    "markmap-view": "^0.14.4",
+    "moment": "^2.29.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.9.0",
+    "react-iframe": "^1.8.5",
+    "react-router": "^6.13.0",
+    "react-router-dom": "^6.13.0",
+    "rsuite": "^5.35.1",
+    "xterm": "^5.2.1",
+    "xterm-addon-canvas": "^0.4.0",
+    "xterm-addon-fit": "^0.7.0",
+    "xterm-addon-image": "^0.4.1",
+    "xterm-addon-search": "^0.12.0",
+    "xterm-addon-serialize": "^0.10.0",
+    "xterm-addon-unicode11": "^0.5.0",
+    "xterm-addon-webgl": "^0.15.0",
+    "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.13",
+    "@types/react-dom": "^18.2.6",
+    "@types/vscode": "^1.79.1",
+    "@types/ws": "^8.5.5",
+    "@vitejs/plugin-react": "^4.0.1",
+    "typescript": "^5.1.3",
+    "vite": "^4.3.9"
+  },
+  "packageManager": "yarn@3.6.1",
+  "workspaces": [
+    "../../client/javascript"
+  ]
+}

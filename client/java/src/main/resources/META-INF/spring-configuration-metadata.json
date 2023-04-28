@@ -1,0 +1,101 @@
+{
+  "groups": [
+    {
+      "name": "mesh configuration",
+      "type": "java.util.HashMap",
+      "sourceType": "java.util.HashMap",
+      "description": "The mesh configuration for springframework."
+    },
+    {
+      "name": "mesh.consumer",
+      "type": "com.be.mesh.client.mpc.ConsumerProperties",
+      "sourceType": "com.be.mesh.client.mpc.ConsumerProperties",
+      "description": "The mesh framework consumer properties."
+    },
+    {
+      "name": "mesh.provider",
+      "type": "com.be.mesh.client.mpc.ProviderProperties",
+      "sourceType": "com.be.mesh.client.mpc.ProviderProperties",
+      "description": "The mesh framework provider properties."
+    }
+  ],
+  "properties": [
+    {
+      "name": "mesh.address",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The consumer address if want direct invoke any node network services.",
+      "defaultValue": "127.0.0.1:570"
+    },
+    {
+      "name": "mesh.runtime",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The consumer has been invoked address if want direct invoke any node network services.",
+      "defaultValue": ""
+    },
+    {
+      "name": "mesh.mode",
+      "type": "java.lang.Long",
+      "sourceType": "java.lang.Long",
+      "description": "Mesh run mode, like enable/failfast etc.",
+      "defaultValue": "2"
+    },
+    {
+      "name": "mesh.name",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The mesh name.",
+      "defaultValue": ""
+    },
+    {
+      "name": "mesh.direct",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The mesh invoke direct address, like mesh.net.version=127.0.0.1:570.",
+      "defaultValue": ""
+    },
+    {
+      "name": "mesh.zone",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The mesh logic deployment zone in[00,99].",
+      "defaultValue": ""
+    },
+    {
+      "name": "mesh.cluster",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The mesh logic deployment cluster in[00,99].",
+      "defaultValue": ""
+    },
+    {
+      "name": "mesh.cell",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The mesh logic deployment cell in[00,99].",
+      "defaultValue": ""
+    },
+    {
+      "name": "mesh.group",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The mesh logic deployment group in[00,99].",
+      "defaultValue": ""
+    },
+    {
+      "name": "mesh.subset",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The mesh logic deployment subset.",
+      "defaultValue": ""
+    },
+    {
+      "name": "mesh.feature",
+      "type": "java.lang.String",
+      "sourceType": "java.lang.String",
+      "description": "The mesh feature setting, like mpi-name-prefix:timeout@optional(inst or node id),=10000.",
+      "defaultValue": ""
+    }
+  ]
+}

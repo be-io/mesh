@@ -1,0 +1,4 @@
+com.be.mesh.client.codec.Transformers$DateTransformer
+com.be.mesh.client.codec.Transformers$LocalDateTimeTransformer
+com.be.mesh.client.codec.Transformers$LocalDateTransformer
+com.be.mesh.client.codec.Transformers$LocalTimeTransformer

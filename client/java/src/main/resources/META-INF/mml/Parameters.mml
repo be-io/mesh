@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2000, 2023, trustbe and/or its affiliates. All rights reserved.
+ * TRUSTBE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
+ */
+package %s;
+
+import com.be.mesh.client.annotate.Index;
+import com.be.mesh.client.mpc.Parameters;
+
+import java.io.Serializable;
+import java.util.Map;
+
+/**
+ * @author coyzeng@gmail.com
+ */
+public class %s implements Parameters, Serializable {
+
+    private static final long serialVersionUID = -1L;
+
+    @Index(value = -1, name = "attachments")
+    private Map<String, String> attachments;
+
+    %s
+
+    public Map<String, String> getAttachments() {
+        return this.attachments;
+    }
+
+    public void setAttachments(Map<String, String> attachments) {
+        this.attachments = attachments;
+    }
+
+    @Override
+    public Map<String, Object> map() {
+        Map<String, Object> dict = new HashMap<>();
+        %s
+        return dict;
+    }
+
+    @Override
+    public Class<?> type() {
+        return getClass();
+    }
+
+    @Override
+    public Map<String, String> attachments() {
+        return this.attachments;
+    }
+
+    @Override
+    public void attachments(Map<String, String> attachments) {
+        this.attachments = attachments;
+    }
+
+    @Override
+    public Object[] arguments() {
+        return new Object[]{%s};
+    }
+
+    @Override
+    public void arguments(Object[] args) {
+        if (null != args) {
+            %s
+        }
+    }
+
+}

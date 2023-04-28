@@ -1,0 +1,5 @@
+com.be.mesh.client.schema.plugin.DigestPlugin
+com.be.mesh.client.schema.plugin.JavadocPlugin
+com.be.mesh.client.schema.plugin.LazyPlugin
+com.be.mesh.client.schema.plugin.LicensePlugin
+com.be.mesh.client.schema.plugin.VersionPlugin

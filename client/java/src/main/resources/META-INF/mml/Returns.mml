@@ -1,0 +1,70 @@
+/*
+ * Copyright (c) 2000, 2023, trustbe and/or its affiliates. All rights reserved.
+ * TRUSTBE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ *
+ */
+package %s;
+
+import com.be.mesh.client.annotate.Index;
+import com.be.mesh.client.struct.Cause;
+import com.be.mesh.client.mpc.Returns;
+
+import java.io.Serializable;
+
+/**
+ * @author coyzeng@gmail.com
+ */
+public class %s implements Returns, Serializable {
+
+    private static final long serialVersionUID = -1L;
+    @Index(0)
+    private String code;
+    @Index(5)
+    private String message;
+    @Index(10)
+    private Cause cause;
+    @Index(15)
+    private %s content;
+
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    @Override
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public Cause getCause() {
+        return this.cause;
+    }
+
+    @Override
+    public void setCause(Cause cause) {
+        this.cause = cause;
+    }
+
+    @Override
+    public Object getContent() {
+        return this.content;
+    }
+
+    @Override
+    public void setContent(Object content) {
+        this.content = (%s)content;
+    }
+
+}

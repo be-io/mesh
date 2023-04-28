@@ -1,0 +1,22 @@
+[package]
+name = "mesh"
+version = "0.0.1"
+authors = ["coyzeng <coyzeng@gmail.com>"]
+edition = "2018"
+keywords = ["SOA", "ServiceMesh"]
+homepage = "https://github.com/trustbe/mesh"
+repository = "https://github.com/trustbe/mesh"
+license = "https://github.com/trustbe/mesh/LICENSE"
+categories = ["mesh"]
+readme = "README.md"
+exclude = ["tests"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+log = "0.4"
+syn = "1.0.29"
+quote = "1.0.9"
+async-trait = "0.1.35"
+tonic = "0.8.3"

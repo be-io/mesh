@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false" scanPeriod="60 seconds" debug="false">
+    <contextName>default</contextName>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${COMMON_STDOUT_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%level) [%thread] [%X{tid}] %logger{20}: %msg %n%ex}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="com.be.mesh.client.boost.RollingFileAppender">
+        <file>x.log</file>
+        <rollingPolicy class="com.be.mesh.client.boost.RollingFileAppender$SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>x-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <maxFileSize>50MB</maxFileSize>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                ${COMMON_APP_LOG_PATTERN:-{"timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","level":"%level","tid":"%X{tid}","pid":"%X{pid}","thread":"%thread","class":"%logger","message":%escape(%message),"method":"%method","line":"%line","stack":%escape(%ex)}\n}
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SYSLOG" class="com.be.mesh.client.boost.RemoteAppender">
+        <formatter charset="UTF-8">
+            <pattern>${COMMON_STDOUT_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%level) [%thread] [%X{tid}] %logger{20}: %msg %n%ex}</pattern>
+        </formatter>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="SYSLOG"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

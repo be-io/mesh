@@ -1,0 +1,89 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
+package com.be.mesh.client.reflect;
+
+import com.be.mesh.client.annotate.Index;
+import com.be.mesh.client.mpc.Parameters;
+import java.io.Serializable;
+import java.util.Map;
+
+public class ReflectTest$ITest$X3Input implements Parameters, Serializable {
+    private static final long serialVersionUID = -1L;
+    @Index(
+        value = -1,
+        name = "attachments"
+    )
+    private Map<String, String> attachments;
+    @Index(
+        value = 0,
+        name = "x"
+    )
+    private boolean x;
+    @Index(
+        value = 1,
+        name = "y"
+    )
+    private long y;
+
+    public Map<String, String> getAttachments() {
+        return this.attachments;
+    }
+
+    public void setAttachments(Map<String, String> var1) {
+        this.attachments = var1;
+    }
+
+    public boolean getX() {
+        return this.x;
+    }
+
+    public void setX(boolean var1) {
+        this.x = var1;
+    }
+
+    public long getY() {
+        return this.y;
+    }
+
+    public void setY(long var1) {
+        this.y = var1;
+    }
+
+    @Override
+    public Map attachments() {
+        return this.attachments;
+    }
+
+    @Override
+    public void attachments(Map var1) {
+        this.attachments = var1;
+    }
+
+    @Override
+    public Object[] arguments() {
+        return new Object[]{this.x, this.y};
+    }
+
+    @Override
+    public void arguments(Object[] args) {
+        if (null != args) {
+            if (args.length > 0) {
+                this.x = (boolean)args[0];
+            }
+            if (args.length > 1) {
+                this.x = (boolean)args[1];
+            }
+        }
+    }
+
+    @Override
+    public Class<?> type() {
+        return this.getClass();
+    }
+
+    public ReflectTest$ITest$X3Input() {
+    }
+}

@@ -1,0 +1,8 @@
+com.be.mesh.client.codec.GsonCodec
+com.be.mesh.client.codec.ProtobufCodec
+com.be.mesh.client.codec.YamlCodec
+com.be.mesh.client.codec.XStreamCodec
+com.be.mesh.client.codec.JacksonCodec
+com.be.mesh.client.codec.ThriftCodec
+com.be.mesh.client.codec.MeshCodec
+com.be.mesh.client.codec.Protobuf4Codec
