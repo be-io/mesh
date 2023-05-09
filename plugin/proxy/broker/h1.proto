@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package io.mesh.h1;
+
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/be-io/mesh/plugin/proxy/broker";
+
+message HttpTrailer {
+  map<string, TrailerValues> metadata = 1;
+  int32 code = 2;
+  string message = 3;
+  repeated google.protobuf.Any details = 4;
+}
+
+message TrailerValues {
+  repeated string values = 1;
+}

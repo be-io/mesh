@@ -9,7 +9,7 @@ from typing import List
 
 import mesh.log as log
 
-MESH_DOMAIN = "ducesoft.com"
+MESH_DOMAIN = "trustbe.cn"
 LOCAL_NODE_ID = "LX0000000000000"
 LOCAL_INST_ID = "JG0000000000000000"
 
@@ -18,7 +18,7 @@ class URN:
     """
     Like:
 
-    create.tenant.omega . 0001 . json . http2 . lx000001 . ducesoft.net
+    create.tenant.omega . 0001 . json . http2 . lx000001 . trustbe.cn
     -------------------   ----   ----   -----   --------   -----------
     name            flag   codec  proto     node       domain
 

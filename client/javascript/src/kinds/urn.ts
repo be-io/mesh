@@ -9,7 +9,7 @@
 import Tool from "@/tool/tool";
 
 export class URN {
-    public static CN = "ducesoft";
+    public static CN = "trustbe";
     public static MESH_DOMAIN = this.CN + ".cn";
     public static LocalNodeId = "LX0000000000000";
     public static LocalInstId = "JG0000000000000000";

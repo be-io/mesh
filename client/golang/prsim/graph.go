@@ -20,8 +20,8 @@ var IGraph = (*Graph)(nil)
 type Graph interface {
 
 	// GraphQL apply graph query language.
-	// @MPI("mesh.graph.expr")
-	GraphQL(ctx context.Context, script *types.MeshQL) ([]map[string]any, error)
+	// @MPI("mesh.graph.graphql")
+	GraphQL(ctx context.Context, mql string, args map[string]any) ([]map[string]any, error)
 
 	// Sort apply graph query language.
 	// @MPI("mesh.graph.sort")
@@ -35,27 +35,23 @@ type Graph interface {
 	// @MPI("mesh.graph.unlink")
 	Unlink(ctx context.Context, quads []*types.Quad) error
 
-	// Sides edge.
-	// @MPI("mesh.graph.sides")
-	Sides(ctx context.Context, cursor *types.Cursor) ([]*types.Side, error)
-
-	// Attrib point.
-	// @MPI("mesh.graph.attrib")
-	Attrib(ctx context.Context, vertex *types.Vertex) error
+	// Paths paths.
+	// @MPI("mesh.graph.paths")
+	Paths(ctx context.Context, cursor *types.Cursor) ([][]*types.Quad, error)
 
 	// Dijkstra
 	// @MPI("mesh.graph.dijkstra")
-	Dijkstra(ctx context.Context, vector *types.Vec2) ([]*types.Quad, error)
+	Dijkstra(ctx context.Context, triple *types.Triple) ([]*types.Quad, error)
 
 	// Drop point.
 	// @MPI("mesh.graph.drop")
-	Drop(ctx context.Context, vector *types.Vec1) error
+	Drop(ctx context.Context, quad *types.Quad) error
 
-	// Vertex point.
-	// @MPI("mesh.graph.vertex")
-	Vertex(ctx context.Context, name string) ([]string, error)
+	// Vertex points.
+	// @MPI("mesh.graph.vertexes")
+	Vertex(ctx context.Context) ([]*types.Quad, error)
 
 	// Dump
 	// @MPI("mesh.graph.dump")
-	Dump(ctx context.Context, name string) ([]*types.Quad, error)
+	Dump(ctx context.Context) ([]*types.Quad, error)
 }

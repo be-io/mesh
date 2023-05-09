@@ -25,11 +25,11 @@ setenv:
 	$(call set,Stage,$(Branch),beta,dev)
 	$(call set,Stage,$(Branch),release,release)
 	$(call set,Stage,$(Branch),master,dev)
-	$(eval ImageRegistryUsername:=$(or $(HARBOR_USERNAME),admin))
-	$(eval ImageRegistryPassword:=$(or $(HARBOR_PASSWORD),Abc12345))
-	$(eval ImageRegistryUrl:=$(or $(REGISTRY_URL),10.12.0.78:5000))
-	$(eval ImageID:=$(ImageRegistryUrl)/middleware-$(Stage)/gaia-mesh:$(Version)-$(CommitID))
-	$(call set,ImageID,$(Stage),release,$(ImageRegistryUrl)/middleware-$(Version)/gaia-mesh:$(MinaVersion)-beta-$(CommitID))
+	$(eval ImageRegistryUsername:=$(or $(HARBOR_USERNAME),mesh))
+	$(eval ImageRegistryPassword:=$(or $(HARBOR_PASSWORD),mesh))
+	$(eval ImageRegistryUrl:=$(or $(REGISTRY_URL),hub.docker.com))
+	$(eval ImageID:=$(ImageRegistryUrl)/be-$(Stage)/mesh:$(Version)-$(CommitID))
+	$(call set,ImageID,$(Stage),release,$(ImageRegistryUrl)/be-$(Version)/mesh:$(MinaVersion)-beta-$(CommitID))
 	$(eval Flags:="-X github.com/be-io/mesh/client/golang/prsim.Version=$(MinaVersion) -X github.com/be-io/mesh/client/golang/prsim.CommitID=$(CommitID)")
 
 .PHONY: dockerhub
@@ -63,7 +63,7 @@ image:setenv
 	buildctl --addr tcp://10.99.253.223:1234 build \
 	--frontend dockerfile.v0 \
 	--local context=. \
-	--local dockerfile=./build/oci/golang/ \
+	--local dockerfile=./manifest/golang/ \
 	--output type=image,registry.insecure=true,name=$(ImageID),push=true \
 	--allow security.insecure \
 	--opt filename=Dockerfile \
@@ -75,36 +75,18 @@ exe:setenv
 	buildctl --addr tcp://10.99.253.223:1234 build \
 	--frontend dockerfile.v0 \
 	--local context=. \
-	--local dockerfile=./build/oci/golang/ \
+	--local dockerfile=./manifest/golang/ \
 	--output type=local,dest=. \
 	--allow security.insecure \
 	--opt filename=Gorun.Dockerfile \
 	--opt platform=linux/amd64,linux/arm64 \
 	--opt build-arg:flags=$(Flags)
 
-.PHONY: check
-check:
-	@./depcheck.sh && \
-		(echo "Installing proto libraries to versions in go.mod." ; \
-		go install github.com/golang/protobuf/protoc-gen-go ; \
-		go install github.com/gogo/protobuf/protoc-gen-gogofaster)
-
-.PHONY: regenerate
-regenerate: setenv clean check
-	@protoc \
-		--proto_path=/usr/local/include \
-		--proto_path=/usr/include \
-		--proto_path=$(ProtoPath) \
-		--gogofaster_out=plugins=grpc,Mapi.proto=$(pwd)/protos/api:pb \
-		pb.proto
-	@rm -rf $(TmpDir)
-	@echo Done.
-
 .PHONY: ci-golang
 ci-golang:
 	buildctl --addr tcp://10.99.253.223:1234 build \
 	--frontend dockerfile.v0 --local context=. \
-	--local dockerfile=./build/oci/golang \
+	--local dockerfile=./manifest/golang \
 	--output type=image,registry.insecure=true,name=10.12.0.78:5000/cosmos/ci:golang-1.19,push=true \
 	--allow security.insecure \
 	--opt filename=BUILD.Dockerfile \

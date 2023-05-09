@@ -1,0 +1,11 @@
+entryPoints:
+  websecure:
+    address: :443
+
+serversTransport:
+  rootCAs:
+    - ./root.cert
+
+providers:
+  file:
+    filename: dynamic_conf.yml

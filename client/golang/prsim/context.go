@@ -39,15 +39,15 @@ const (
 
 	// INC
 
-	MeshVersion          Metadata = "mesh-version"
-	MeshTechProviderCode Metadata = "mesh-tech-provider-code"
-	MeshTraceId          Metadata = "mesh-trace-id"
-	MeshToken            Metadata = "mesh-token"
-	MeshFromInstId       Metadata = "mesh-from-inst-id"
-	MeshFromNodeId       Metadata = "mesh-from-node-id"
-	MeshTargetNodeId     Metadata = "mesh-target-node-id"
-	MeshTargetInstId     Metadata = "mesh-target-inst-id"
-	MeshSessionId        Metadata = "mesh-session-id"
+	MeshVersion          Metadata = "x-ptp-version"
+	MeshTechProviderCode Metadata = "x-ptp-tech-provider-code"
+	MeshTraceId          Metadata = "x-ptp-trace-id"
+	MeshToken            Metadata = "x-ptp-token"
+	MeshFromInstId       Metadata = "x-ptp-from-inst-id"
+	MeshFromNodeId       Metadata = "x-ptp-from-node-id"
+	MeshTargetNodeId     Metadata = "x-ptp-target-node-id"
+	MeshTargetInstId     Metadata = "x-ptp-target-inst-id"
+	MeshSessionId        Metadata = "x-ptp-session-id"
 )
 
 var names = []Metadata{

@@ -2,11 +2,10 @@
 
 # Mesh: A lightweight, distributed, relational network architecture for MPC
 
-[![Build Status](https://travis-ci.org/ducesoft/babel.svg?branch=master)](https://travis-ci.org/ducesoft/babel)
 [![Financial Contributors on Open Collective](https://opencollective.com/babel/all/badge.svg?label=financial+contributors)](https://opencollective.com/babel) [![codecov](https://codecov.io/gh/babel/babel/branch/master/graph/badge.svg)](https://codecov.io/gh/babel/babel)
 ![license](https://img.shields.io/github/license/ducesoft/babel.svg)
 
-Private Transmission Protocol -- PTP/1.0 [README](Specifications_CN.md)
+Private Transmission Protocol -- PTP/1.0 [README](specifications/api/Specifications_CN.md)
 
 中文版 [README](README_CN.md)
 

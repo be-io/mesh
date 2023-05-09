@@ -30,7 +30,7 @@ import java.util.List;
 public class URN implements Serializable {
 
     private static final long serialVersionUID = -1427045979049617090L;
-    public static final String MESH_DOMAIN = "ducesoft.com";
+    public static final String MESH_DOMAIN = "trustbe.cn";
     private String domain;
     private String nodeId;
     private URNFlag flag;

@@ -33,7 +33,7 @@ func init() {
 				Inbound:      func() macro.Parameters { return new(MeshGraphGraphQLParameters) },
 				Outbound:     func() macro.Returns { return new(MeshGraphGraphQLReturns) },
 				MPI: &macro.MPIAnnotation{
-					Meta: &macro.Rtt{Name: "mesh.graph.expr"},
+					Meta: &macro.Rtt{Name: "mesh.graph.graphql"},
 				},
 			},
 			"Sort": {
@@ -72,28 +72,16 @@ func init() {
 					Meta: &macro.Rtt{Name: "mesh.graph.unlink"},
 				},
 			},
-			"Sides": {
+			"Paths": {
 				DeclaredKind: (*prsim.Graph)(nil),
 				TName:        "prsim.Graph",
-				Name:         "Sides",
-				Intype:       func() macro.Parameters { var parameters MeshGraphSidesParameters; return &parameters },
-				Retype:       func() macro.Returns { var returns MeshGraphSidesReturns; return &returns },
-				Inbound:      func() macro.Parameters { return new(MeshGraphSidesParameters) },
-				Outbound:     func() macro.Returns { return new(MeshGraphSidesReturns) },
+				Name:         "Paths",
+				Intype:       func() macro.Parameters { var parameters MeshGraphPathsParameters; return &parameters },
+				Retype:       func() macro.Returns { var returns MeshGraphPathsReturns; return &returns },
+				Inbound:      func() macro.Parameters { return new(MeshGraphPathsParameters) },
+				Outbound:     func() macro.Returns { return new(MeshGraphPathsReturns) },
 				MPI: &macro.MPIAnnotation{
-					Meta: &macro.Rtt{Name: "mesh.graph.sides"},
-				},
-			},
-			"Attrib": {
-				DeclaredKind: (*prsim.Graph)(nil),
-				TName:        "prsim.Graph",
-				Name:         "Attrib",
-				Intype:       func() macro.Parameters { var parameters MeshGraphAttribParameters; return &parameters },
-				Retype:       func() macro.Returns { var returns MeshGraphAttribReturns; return &returns },
-				Inbound:      func() macro.Parameters { return new(MeshGraphAttribParameters) },
-				Outbound:     func() macro.Returns { return new(MeshGraphAttribReturns) },
-				MPI: &macro.MPIAnnotation{
-					Meta: &macro.Rtt{Name: "mesh.graph.attrib"},
+					Meta: &macro.Rtt{Name: "mesh.graph.paths"},
 				},
 			},
 			"Dijkstra": {
@@ -129,7 +117,7 @@ func init() {
 				Inbound:      func() macro.Parameters { return new(MeshGraphVertexParameters) },
 				Outbound:     func() macro.Returns { return new(MeshGraphVertexReturns) },
 				MPI: &macro.MPIAnnotation{
-					Meta: &macro.Rtt{Name: "mesh.graph.vertex"},
+					Meta: &macro.Rtt{Name: "mesh.graph.vertexes"},
 				},
 			},
 			"Dump": {
@@ -167,9 +155,9 @@ func (that *meshGraphMPI) GetMethods() map[string]*macro.Method {
 }
 
 // GraphQL apply graph query language.
-// @MPI("mesh.graph.expr")
-func (that *meshGraphMPI) GraphQL(ctx context.Context, script *types.MeshQL) ([]map[string]any, error) {
-	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["GraphQL"], script)
+// @MPI("mesh.graph.graphql")
+func (that *meshGraphMPI) GraphQL(ctx context.Context, mql string, args map[string]any) ([]map[string]any, error) {
+	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["GraphQL"], mql, args)
 	if nil != err {
 		x := new(MeshGraphGraphQLReturns)
 		return x.Content, err
@@ -212,33 +200,26 @@ func (that *meshGraphMPI) Unlink(ctx context.Context, quads []*types.Quad) error
 	return err
 }
 
-// Sides edge.
-// @MPI("mesh.graph.sides")
-func (that *meshGraphMPI) Sides(ctx context.Context, cursor *types.Cursor) ([]*types.Side, error) {
-	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["Sides"], cursor)
+// Paths paths.
+// @MPI("mesh.graph.paths")
+func (that *meshGraphMPI) Paths(ctx context.Context, cursor *types.Cursor) ([][]*types.Quad, error) {
+	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["Paths"], cursor)
 	if nil != err {
-		x := new(MeshGraphSidesReturns)
+		x := new(MeshGraphPathsReturns)
 		return x.Content, err
 	}
-	x, ok := ret.(*MeshGraphSidesReturns)
+	x, ok := ret.(*MeshGraphPathsReturns)
 	if ok {
 		return x.Content, err
 	}
-	x = new(MeshGraphSidesReturns)
+	x = new(MeshGraphPathsReturns)
 	return x.Content, cause.Errorf("Cant resolve response ")
-}
-
-// Attrib point.
-// @MPI("mesh.graph.attrib")
-func (that *meshGraphMPI) Attrib(ctx context.Context, vertex *types.Vertex) error {
-	_, err := that.invoker.Call(ctx, that.invoker, that.methods["Attrib"], vertex)
-	return err
 }
 
 // Dijkstra
 // @MPI("mesh.graph.dijkstra")
-func (that *meshGraphMPI) Dijkstra(ctx context.Context, vector *types.Vec2) ([]*types.Quad, error) {
-	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["Dijkstra"], vector)
+func (that *meshGraphMPI) Dijkstra(ctx context.Context, triple *types.Triple) ([]*types.Quad, error) {
+	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["Dijkstra"], triple)
 	if nil != err {
 		x := new(MeshGraphDijkstraReturns)
 		return x.Content, err
@@ -253,15 +234,15 @@ func (that *meshGraphMPI) Dijkstra(ctx context.Context, vector *types.Vec2) ([]*
 
 // Drop point.
 // @MPI("mesh.graph.drop")
-func (that *meshGraphMPI) Drop(ctx context.Context, vector *types.Vec1) error {
-	_, err := that.invoker.Call(ctx, that.invoker, that.methods["Drop"], vector)
+func (that *meshGraphMPI) Drop(ctx context.Context, quad *types.Quad) error {
+	_, err := that.invoker.Call(ctx, that.invoker, that.methods["Drop"], quad)
 	return err
 }
 
-// Vertex point.
-// @MPI("mesh.graph.vertex")
-func (that *meshGraphMPI) Vertex(ctx context.Context, name string) ([]string, error) {
-	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["Vertex"], name)
+// Vertex points.
+// @MPI("mesh.graph.vertexes")
+func (that *meshGraphMPI) Vertex(ctx context.Context) ([]*types.Quad, error) {
+	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["Vertex"])
 	if nil != err {
 		x := new(MeshGraphVertexReturns)
 		return x.Content, err
@@ -276,8 +257,8 @@ func (that *meshGraphMPI) Vertex(ctx context.Context, name string) ([]string, er
 
 // Dump
 // @MPI("mesh.graph.dump")
-func (that *meshGraphMPI) Dump(ctx context.Context, name string) ([]*types.Quad, error) {
-	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["Dump"], name)
+func (that *meshGraphMPI) Dump(ctx context.Context) ([]*types.Quad, error) {
+	ret, err := that.invoker.Call(ctx, that.invoker, that.methods["Dump"])
 	if nil != err {
 		x := new(MeshGraphDumpReturns)
 		return x.Content, err
@@ -292,7 +273,8 @@ func (that *meshGraphMPI) Dump(ctx context.Context, name string) ([]*types.Quad,
 
 type MeshGraphGraphQLParameters struct {
 	Attachments map[string]string `index:"-1" json:"attachments" xml:"attachments" yaml:"attachments"`
-	Script      *types.MeshQL     `index:"0" json:"script" xml:"script" yaml:"script"`
+	Mql         string            `index:"0" json:"mql" xml:"mql" yaml:"mql"`
+	Args        map[string]any    `index:"1" json:"args" xml:"args" yaml:"args"`
 }
 
 func (that *MeshGraphGraphQLParameters) GetKind() interface{} {
@@ -301,14 +283,18 @@ func (that *MeshGraphGraphQLParameters) GetKind() interface{} {
 
 func (that *MeshGraphGraphQLParameters) GetArguments(ctx context.Context) []interface{} {
 	var arguments []interface{}
-	arguments = append(arguments, that.Script)
+	arguments = append(arguments, that.Mql)
+	arguments = append(arguments, that.Args)
 	return arguments
 }
 
 func (that *MeshGraphGraphQLParameters) SetArguments(ctx context.Context, arguments ...interface{}) {
 	if len(arguments) > 0 {
 		if len(arguments) > 0 && nil != arguments[0] {
-			that.Script = arguments[0].(*types.MeshQL)
+			that.Mql = arguments[0].(string)
+		}
+		if len(arguments) > 1 && nil != arguments[1] {
+			that.Args = arguments[1].(map[string]any)
 		}
 	}
 }
@@ -584,22 +570,22 @@ func (that *MeshGraphUnlinkReturns) SetContent(ctx context.Context, arguments ..
 	}
 }
 
-type MeshGraphSidesParameters struct {
+type MeshGraphPathsParameters struct {
 	Attachments map[string]string `index:"-1" json:"attachments" xml:"attachments" yaml:"attachments"`
 	Cursor      *types.Cursor     `index:"0" json:"cursor" xml:"cursor" yaml:"cursor"`
 }
 
-func (that *MeshGraphSidesParameters) GetKind() interface{} {
-	return new(MeshGraphSidesParameters)
+func (that *MeshGraphPathsParameters) GetKind() interface{} {
+	return new(MeshGraphPathsParameters)
 }
 
-func (that *MeshGraphSidesParameters) GetArguments(ctx context.Context) []interface{} {
+func (that *MeshGraphPathsParameters) GetArguments(ctx context.Context) []interface{} {
 	var arguments []interface{}
 	arguments = append(arguments, that.Cursor)
 	return arguments
 }
 
-func (that *MeshGraphSidesParameters) SetArguments(ctx context.Context, arguments ...interface{}) {
+func (that *MeshGraphPathsParameters) SetArguments(ctx context.Context, arguments ...interface{}) {
 	if len(arguments) > 0 {
 		if len(arguments) > 0 && nil != arguments[0] {
 			that.Cursor = arguments[0].(*types.Cursor)
@@ -607,133 +593,62 @@ func (that *MeshGraphSidesParameters) SetArguments(ctx context.Context, argument
 	}
 }
 
-func (that *MeshGraphSidesParameters) GetAttachments(ctx context.Context) map[string]string {
+func (that *MeshGraphPathsParameters) GetAttachments(ctx context.Context) map[string]string {
 	return that.Attachments
 }
 
-func (that *MeshGraphSidesParameters) SetAttachments(ctx context.Context, attachments map[string]string) {
+func (that *MeshGraphPathsParameters) SetAttachments(ctx context.Context, attachments map[string]string) {
 	that.Attachments = attachments
 }
 
-type MeshGraphSidesReturns struct {
-	Code    string        `index:"0" json:"code" xml:"code" yaml:"code" comment:"Result code"`
-	Message string        `index:"5" json:"message" xml:"message" yaml:"message" comment:"Result message"`
-	Cause   *macro.Cause  `index:"10" json:"cause" xml:"cause" yaml:"cause" comment:"Service cause stacktrace"`
-	Content []*types.Side `index:"15" json:"content" xml:"content" yaml:"content"`
+type MeshGraphPathsReturns struct {
+	Code    string          `index:"0" json:"code" xml:"code" yaml:"code" comment:"Result code"`
+	Message string          `index:"5" json:"message" xml:"message" yaml:"message" comment:"Result message"`
+	Cause   *macro.Cause    `index:"10" json:"cause" xml:"cause" yaml:"cause" comment:"Service cause stacktrace"`
+	Content [][]*types.Quad `index:"15" json:"content" xml:"content" yaml:"content"`
 }
 
-func (that *MeshGraphSidesReturns) GetCode() string {
+func (that *MeshGraphPathsReturns) GetCode() string {
 	return that.Code
 }
 
-func (that *MeshGraphSidesReturns) SetCode(code string) {
+func (that *MeshGraphPathsReturns) SetCode(code string) {
 	that.Code = code
 }
 
-func (that *MeshGraphSidesReturns) GetMessage() string {
+func (that *MeshGraphPathsReturns) GetMessage() string {
 	return that.Message
 }
 
-func (that *MeshGraphSidesReturns) SetMessage(message string) {
+func (that *MeshGraphPathsReturns) SetMessage(message string) {
 	that.Message = message
 }
 
-func (that *MeshGraphSidesReturns) GetCause(ctx context.Context) *macro.Cause {
+func (that *MeshGraphPathsReturns) GetCause(ctx context.Context) *macro.Cause {
 	return that.Cause
 }
 
-func (that *MeshGraphSidesReturns) SetCause(ctx context.Context, cause *macro.Cause) {
+func (that *MeshGraphPathsReturns) SetCause(ctx context.Context, cause *macro.Cause) {
 	that.Cause = cause
 }
 
-func (that *MeshGraphSidesReturns) GetContent(ctx context.Context) []interface{} {
+func (that *MeshGraphPathsReturns) GetContent(ctx context.Context) []interface{} {
 	var arguments []interface{}
 	arguments = append(arguments, that.Content)
 	return arguments
 }
 
-func (that *MeshGraphSidesReturns) SetContent(ctx context.Context, arguments ...interface{}) {
+func (that *MeshGraphPathsReturns) SetContent(ctx context.Context, arguments ...interface{}) {
 	if len(arguments) > 0 {
 		if len(arguments) > 0 && nil != arguments[0] {
-			that.Content = arguments[0].([]*types.Side)
+			that.Content = arguments[0].([][]*types.Quad)
 		}
-	}
-}
-
-type MeshGraphAttribParameters struct {
-	Attachments map[string]string `index:"-1" json:"attachments" xml:"attachments" yaml:"attachments"`
-	Vertex      *types.Vertex     `index:"0" json:"vertex" xml:"vertex" yaml:"vertex"`
-}
-
-func (that *MeshGraphAttribParameters) GetKind() interface{} {
-	return new(MeshGraphAttribParameters)
-}
-
-func (that *MeshGraphAttribParameters) GetArguments(ctx context.Context) []interface{} {
-	var arguments []interface{}
-	arguments = append(arguments, that.Vertex)
-	return arguments
-}
-
-func (that *MeshGraphAttribParameters) SetArguments(ctx context.Context, arguments ...interface{}) {
-	if len(arguments) > 0 {
-		if len(arguments) > 0 && nil != arguments[0] {
-			that.Vertex = arguments[0].(*types.Vertex)
-		}
-	}
-}
-
-func (that *MeshGraphAttribParameters) GetAttachments(ctx context.Context) map[string]string {
-	return that.Attachments
-}
-
-func (that *MeshGraphAttribParameters) SetAttachments(ctx context.Context, attachments map[string]string) {
-	that.Attachments = attachments
-}
-
-type MeshGraphAttribReturns struct {
-	Code    string       `index:"0" json:"code" xml:"code" yaml:"code" comment:"Result code"`
-	Message string       `index:"5" json:"message" xml:"message" yaml:"message" comment:"Result message"`
-	Cause   *macro.Cause `index:"10" json:"cause" xml:"cause" yaml:"cause" comment:"Service cause stacktrace"`
-}
-
-func (that *MeshGraphAttribReturns) GetCode() string {
-	return that.Code
-}
-
-func (that *MeshGraphAttribReturns) SetCode(code string) {
-	that.Code = code
-}
-
-func (that *MeshGraphAttribReturns) GetMessage() string {
-	return that.Message
-}
-
-func (that *MeshGraphAttribReturns) SetMessage(message string) {
-	that.Message = message
-}
-
-func (that *MeshGraphAttribReturns) GetCause(ctx context.Context) *macro.Cause {
-	return that.Cause
-}
-
-func (that *MeshGraphAttribReturns) SetCause(ctx context.Context, cause *macro.Cause) {
-	that.Cause = cause
-}
-
-func (that *MeshGraphAttribReturns) GetContent(ctx context.Context) []interface{} {
-	var arguments []interface{}
-	return arguments
-}
-
-func (that *MeshGraphAttribReturns) SetContent(ctx context.Context, arguments ...interface{}) {
-	if len(arguments) > 0 {
 	}
 }
 
 type MeshGraphDijkstraParameters struct {
 	Attachments map[string]string `index:"-1" json:"attachments" xml:"attachments" yaml:"attachments"`
-	Vector      *types.Vec2       `index:"0" json:"vector" xml:"vector" yaml:"vector"`
+	Triple      *types.Triple     `index:"0" json:"triple" xml:"triple" yaml:"triple"`
 }
 
 func (that *MeshGraphDijkstraParameters) GetKind() interface{} {
@@ -742,14 +657,14 @@ func (that *MeshGraphDijkstraParameters) GetKind() interface{} {
 
 func (that *MeshGraphDijkstraParameters) GetArguments(ctx context.Context) []interface{} {
 	var arguments []interface{}
-	arguments = append(arguments, that.Vector)
+	arguments = append(arguments, that.Triple)
 	return arguments
 }
 
 func (that *MeshGraphDijkstraParameters) SetArguments(ctx context.Context, arguments ...interface{}) {
 	if len(arguments) > 0 {
 		if len(arguments) > 0 && nil != arguments[0] {
-			that.Vector = arguments[0].(*types.Vec2)
+			that.Triple = arguments[0].(*types.Triple)
 		}
 	}
 }
@@ -809,7 +724,7 @@ func (that *MeshGraphDijkstraReturns) SetContent(ctx context.Context, arguments 
 
 type MeshGraphDropParameters struct {
 	Attachments map[string]string `index:"-1" json:"attachments" xml:"attachments" yaml:"attachments"`
-	Vector      *types.Vec1       `index:"0" json:"vector" xml:"vector" yaml:"vector"`
+	Quad        *types.Quad       `index:"0" json:"quad" xml:"quad" yaml:"quad"`
 }
 
 func (that *MeshGraphDropParameters) GetKind() interface{} {
@@ -818,14 +733,14 @@ func (that *MeshGraphDropParameters) GetKind() interface{} {
 
 func (that *MeshGraphDropParameters) GetArguments(ctx context.Context) []interface{} {
 	var arguments []interface{}
-	arguments = append(arguments, that.Vector)
+	arguments = append(arguments, that.Quad)
 	return arguments
 }
 
 func (that *MeshGraphDropParameters) SetArguments(ctx context.Context, arguments ...interface{}) {
 	if len(arguments) > 0 {
 		if len(arguments) > 0 && nil != arguments[0] {
-			that.Vector = arguments[0].(*types.Vec1)
+			that.Quad = arguments[0].(*types.Quad)
 		}
 	}
 }
@@ -880,7 +795,6 @@ func (that *MeshGraphDropReturns) SetContent(ctx context.Context, arguments ...i
 
 type MeshGraphVertexParameters struct {
 	Attachments map[string]string `index:"-1" json:"attachments" xml:"attachments" yaml:"attachments"`
-	Name        string            `index:"0" json:"name" xml:"name" yaml:"name"`
 }
 
 func (that *MeshGraphVertexParameters) GetKind() interface{} {
@@ -889,15 +803,11 @@ func (that *MeshGraphVertexParameters) GetKind() interface{} {
 
 func (that *MeshGraphVertexParameters) GetArguments(ctx context.Context) []interface{} {
 	var arguments []interface{}
-	arguments = append(arguments, that.Name)
 	return arguments
 }
 
 func (that *MeshGraphVertexParameters) SetArguments(ctx context.Context, arguments ...interface{}) {
 	if len(arguments) > 0 {
-		if len(arguments) > 0 && nil != arguments[0] {
-			that.Name = arguments[0].(string)
-		}
 	}
 }
 
@@ -910,10 +820,10 @@ func (that *MeshGraphVertexParameters) SetAttachments(ctx context.Context, attac
 }
 
 type MeshGraphVertexReturns struct {
-	Code    string       `index:"0" json:"code" xml:"code" yaml:"code" comment:"Result code"`
-	Message string       `index:"5" json:"message" xml:"message" yaml:"message" comment:"Result message"`
-	Cause   *macro.Cause `index:"10" json:"cause" xml:"cause" yaml:"cause" comment:"Service cause stacktrace"`
-	Content []string     `index:"15" json:"content" xml:"content" yaml:"content"`
+	Code    string        `index:"0" json:"code" xml:"code" yaml:"code" comment:"Result code"`
+	Message string        `index:"5" json:"message" xml:"message" yaml:"message" comment:"Result message"`
+	Cause   *macro.Cause  `index:"10" json:"cause" xml:"cause" yaml:"cause" comment:"Service cause stacktrace"`
+	Content []*types.Quad `index:"15" json:"content" xml:"content" yaml:"content"`
 }
 
 func (that *MeshGraphVertexReturns) GetCode() string {
@@ -949,14 +859,13 @@ func (that *MeshGraphVertexReturns) GetContent(ctx context.Context) []interface{
 func (that *MeshGraphVertexReturns) SetContent(ctx context.Context, arguments ...interface{}) {
 	if len(arguments) > 0 {
 		if len(arguments) > 0 && nil != arguments[0] {
-			that.Content = arguments[0].([]string)
+			that.Content = arguments[0].([]*types.Quad)
 		}
 	}
 }
 
 type MeshGraphDumpParameters struct {
 	Attachments map[string]string `index:"-1" json:"attachments" xml:"attachments" yaml:"attachments"`
-	Name        string            `index:"0" json:"name" xml:"name" yaml:"name"`
 }
 
 func (that *MeshGraphDumpParameters) GetKind() interface{} {
@@ -965,15 +874,11 @@ func (that *MeshGraphDumpParameters) GetKind() interface{} {
 
 func (that *MeshGraphDumpParameters) GetArguments(ctx context.Context) []interface{} {
 	var arguments []interface{}
-	arguments = append(arguments, that.Name)
 	return arguments
 }
 
 func (that *MeshGraphDumpParameters) SetArguments(ctx context.Context, arguments ...interface{}) {
 	if len(arguments) > 0 {
-		if len(arguments) > 0 && nil != arguments[0] {
-			that.Name = arguments[0].(string)
-		}
 	}
 }
 

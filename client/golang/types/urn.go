@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	CN             = "ducesoft"
+	CN             = "trustbe"
 	MeshDomain     = CN + ".cn"
 	LocalNodeId    = "LX0000000000000"
 	LocalInstId    = "JG0000000000000000"
@@ -259,9 +259,13 @@ func Substring(v string, start int, stop int) string {
 }
 
 func LocURN(ctx context.Context, name string) string {
+	return AnyURN(ctx, name, LocalNodeId)
+}
+
+func AnyURN(ctx context.Context, name string, nodeId string) string {
 	urn := &URN{
 		Domain: MeshDomain,
-		NodeId: LocalNodeId,
+		NodeId: nodeId,
 		Flag:   FromURNFlag(ctx, "0001000000000000000000000000000000000"),
 		Name:   name,
 	}
