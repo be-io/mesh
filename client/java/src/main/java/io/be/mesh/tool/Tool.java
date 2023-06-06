@@ -730,26 +730,28 @@ public final class Tool {
     }
 
     public static boolean isInMyNet(String nodeId, String... ids) {
-        if (optional(ids)) {
+        if (optional(nodeId) || optional(ids)) {
             return false;
         }
-        String seq = Tool.substring(nodeId, 8, 14);
+        String seq = nodeId.length() == 18 ? Tool.substring(nodeId, 4, 6) : nodeId;
+        seq = nodeId.length() == 15 ? Tool.substring(nodeId, 8, 6) : seq;
         for (String id : ids) {
             if (optional(id)) {
                 continue;
             }
-            if (LOCAL_NODE_ID.equalsIgnoreCase(id) || LOCAL_INST_ID.equalsIgnoreCase(id)) {
+            if (LOCAL_NODE_ID.equalsIgnoreCase(id) || LOCAL_INST_ID.equalsIgnoreCase(id) || id.equalsIgnoreCase(nodeId)) {
                 return true;
             }
-            if (id.toUpperCase().startsWith("JG") && Tool.equals(seq, Tool.substring(id, 4, 10))) {
+            if (id.length() == 18 && Tool.equals(seq, Tool.substring(id, 4, 6))) {
                 return true;
             }
-            if (id.toUpperCase().startsWith("LX") && Tool.equals(seq, Tool.substring(id, 8, 14))) {
+            if (id.length() == 15 && Tool.equals(seq, Tool.substring(id, 8, 6))) {
                 return true;
             }
         }
         return false;
     }
+
 
     public static String padding(String v, int length, char x) {
         if (optional(v)) {
