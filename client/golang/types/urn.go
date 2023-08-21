@@ -179,12 +179,12 @@ func AsArray(text string) []string {
 func FromURN(ctx context.Context, urn string) *URN {
 	name := &URN{Flag: &URNFlag{}}
 	if "" == urn {
-		log.Warn(ctx, "Unresolved urn %s", urn)
+		log.Debug(ctx, "Unresolved urn %s", urn)
 		return name
 	}
 	names := AsArray(urn)
 	if len(names) < 5 {
-		log.Warn(ctx, "Unresolved urn %s", urn)
+		log.Debug(ctx, "Unresolved urn %s", urn)
 		name.Name = urn
 		return name
 	}
