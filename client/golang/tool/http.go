@@ -19,5 +19,5 @@ var Client = &http.Client{
 		MaxConnsPerHost:     10,
 		IdleConnTimeout:     time.Minute * 10,
 	},
-	Timeout: time.Second * 12,
+	Timeout: time.Minute * 2,
 }

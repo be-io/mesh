@@ -69,6 +69,10 @@ func init() {
 
 func ServeHTTP[T any](w http.ResponseWriter, r *http.Request, fn func(ctx prsim.Context, input *T) ([]byte, error)) {
 	ctx := mpc.HTTPTracerContext(r)
+	for k, v := range prsim.GetMetadata(r.Header) {
+		ctx.GetAttachments()[k] = v
+	}
+	prsim.ContentLength.Del(ctx.GetAttachments())
 	defer func() {
 		if err := recover(); nil != err {
 			log.Error(ctx, "%v", err)
@@ -83,7 +87,11 @@ func ServeHTTP[T any](w http.ResponseWriter, r *http.Request, fn func(ctx prsim.
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	v := WithBound(ctx, func() ([]byte, error) { return fn(ctx, &input) })
+	b, err := fn(ctx, &input)
+	if ok := cause.WriteHTTPError(err, w); ok {
+		return
+	}
+	v := WithBound(ctx, func() ([]byte, error) { return b, err })
 	buff, err := Encode(v, contentType)
 	if nil != err {
 		log.Warn(ctx, err.Error())
@@ -111,10 +119,11 @@ func TransportHTTP(ctx prsim.Context, input any, uri string) ([]byte, error) {
 	if nil != err {
 		return nil, cause.Error(err)
 	}
-	in, err := http.NewRequestWithContext(ctx, http.MethodPost, "127.0.0.1:7304/v1/interconn/chan/invoke", bytes.NewBuffer(bi))
+	in, err := http.NewRequestWithContext(ctx, http.MethodPost, "http://127.0.0.1:7304/v1/interconn/chan/invoke", bytes.NewBuffer(bi))
 	if nil != err {
 		return nil, cause.Error(err)
 	}
+	prsim.SetMetadata(ctx, in.Header)
 	in.Header.Set("Content-Type", httpx.MIMEPROTOBUF)
 	prsim.MeshURI.SetHeader(in.Header, uri)
 	out, err := tool.Client.Do(in)
@@ -127,7 +136,7 @@ func TransportHTTP(ctx prsim.Context, input any, uri string) ([]byte, error) {
 		return nil, cause.Error(err)
 	}
 	if out.StatusCode != http.StatusOK {
-		return nil, cause.Errorf(string(bo))
+		return nil, cause.Errorh(out.StatusCode, string(bo))
 	}
 	o := new(Outbound)
 	if err = Decode(bo, o, out.Header.Get("Content-Type")); nil != err {
