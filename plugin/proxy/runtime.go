@@ -47,7 +47,7 @@ func (that *runtimeAware) Init() error {
 	that.RemoteNet = macro.Load(prsim.INetwork).Get(macro.MeshMPI).(prsim.Network)
 	that.Cache = macro.Load(prsim.ICache).Get(macro.MeshSPI).(prsim.Cache)
 	that.Codec = macro.Load(codec.ICodec).Get(codec.JSON).(codec.Codec)
-	that.Network = macro.Load(prsim.INetwork).Get(macro.MeshSys).(prsim.Network)
+	that.Network = macro.Load(prsim.INetwork).Get(macro.MeshSPI).(prsim.Network)
 	that.Dispatcher = macro.Load(prsim.IDispatcher).Get(macro.MeshSPI).(prsim.Dispatcher)
 	that.Scheduler = macro.Load(prsim.IScheduler).Get(macro.MeshSys).(prsim.Scheduler)
 	that.RemoteRegistry = macro.Load(prsim.IRegistry).Get(macro.MeshMPI).(prsim.Registry)

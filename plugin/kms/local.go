@@ -20,6 +20,7 @@ import (
 	_ "github.com/be-io/mesh/client/golang/codec"
 	"github.com/be-io/mesh/client/golang/macro"
 	"github.com/be-io/mesh/client/golang/prsim"
+	"github.com/be-io/mesh/client/golang/system"
 	"github.com/be-io/mesh/client/golang/tool"
 	"github.com/be-io/mesh/client/golang/types"
 	"math/big"
@@ -82,6 +83,7 @@ func (that *localKMS) Reset(ctx context.Context, env *types.Environ) error {
 		return cause.Error(err)
 	}
 	that.env = env
+	system.Environ.Set(env)
 	return nil
 }
 
@@ -101,6 +103,11 @@ func (that *localKMS) Environ(ctx context.Context) (*types.Environ, error) {
 	var env types.Environ
 	if err := prsim.GetKV(ctx, aware.KV, EnvKey, &env); nil != err {
 		return nil, cause.Error(err)
+	}
+	if "" != env.NodeId {
+		that.env = &env
+		system.Environ.Set(that.env)
+		return that.env, nil
 	}
 	keys, err := that.ApplyRoot(ctx, &types.KeyCsr{
 		CNO:      types.LocalNodeId,
@@ -131,6 +138,7 @@ func (that *localKMS) Environ(ctx context.Context) (*types.Environ, error) {
 		return nil, cause.Error(err)
 	}
 	that.env = &env
+	system.Environ.Set(that.env)
 	return that.env, nil
 }
 

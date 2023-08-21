@@ -24,6 +24,7 @@ import (
 	"google.golang.org/grpc/status"
 	"io"
 	"runtime/debug"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -173,7 +174,8 @@ func (that *privateTransferTransportServer) Peek(ctx context.Context, inbound *P
 		}
 		mtx := mpc.ContextWith(ctx)
 		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(mtx.GetAttachments())) {
-			b, err := aware.Session.Peek(ctx, inbound.Topic)
+			topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), inbound.Topic)
+			b, err := aware.Session.Peek(ctx, topic)
 			if nil != err {
 				return nil, cause.Error(err)
 			}
@@ -203,7 +205,14 @@ func (that *privateTransferTransportServer) Pop(ctx context.Context, inbound *Po
 		}
 		mtx := mpc.ContextWith(ctx)
 		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(mtx.GetAttachments())) {
-			b, err := aware.Session.Pop(ctx, types.Duration(time.Millisecond*time.Duration(inbound.Timeout)), inbound.Topic)
+			timeout := types.Duration(time.Duration(inbound.Timeout) * time.Millisecond)
+			if x := prsim.MeshTimeout.Get(mtx.GetAttachments()); "" != x {
+				if t, err := strconv.Atoi(x); nil == err && t > 0 {
+					timeout = types.Duration(time.Duration(t) * time.Millisecond)
+				}
+			}
+			topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), inbound.Topic)
+			b, err := aware.Session.Pop(ctx, timeout, topic)
 			if nil != err {
 				return nil, cause.Error(err)
 			}
@@ -233,7 +242,8 @@ func (that *privateTransferTransportServer) Push(ctx context.Context, inbound *P
 		}
 		mtx := mpc.ContextWith(ctx)
 		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(mtx.GetAttachments())) {
-			err = aware.Session.Push(ctx, inbound.Payload, inbound.Metadata, inbound.Topic)
+			topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), inbound.Topic)
+			err = aware.Session.Push(ctx, inbound.Payload, inbound.Metadata, topic)
 			if nil != err {
 				return nil, cause.Error(err)
 			}
@@ -262,7 +272,14 @@ func (that *privateTransferTransportServer) Release(ctx context.Context, inbound
 		}
 		mtx := mpc.ContextWith(ctx)
 		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(mtx.GetAttachments())) {
-			err = aware.Session.Release(ctx, types.Duration(time.Millisecond*time.Duration(inbound.Timeout)), inbound.Topic)
+			timeout := types.Duration(time.Duration(inbound.Timeout) * time.Millisecond)
+			if x := prsim.MeshTimeout.Get(mtx.GetAttachments()); "" != x {
+				if t, err := strconv.Atoi(x); nil == err && t > 0 {
+					timeout = types.Duration(time.Duration(t) * time.Millisecond)
+				}
+			}
+			topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), inbound.Topic)
+			err = aware.Session.Release(ctx, timeout, topic)
 			if nil != err {
 				return nil, cause.Error(err)
 			}

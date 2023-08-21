@@ -54,7 +54,7 @@ func (that *PRSISession) Pop(ctx context.Context, timeout types.Duration, topic 
 	if nil != err {
 		return nil, cause.Error(err)
 	}
-	rt, err := rc.BLPop(ctx, time.Duration(timeout)-time.Millisecond*500, chanId).Result()
+	rt, err := rc.BLPop(ctx, time.Duration(timeout), chanId).Result()
 	if len(rt) < 2 || iset.IsNil(err) {
 		return nil, nil
 	}

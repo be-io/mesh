@@ -38,6 +38,6 @@ func (that *Environ) ID(ctx context.Context) *NodeID {
 	if nil == err {
 		return nodeId
 	}
-	log.Error(ctx, err.Error())
-	return &NodeID{}
+	log.Debug(ctx, err.Error())
+	return &NodeID{SEQ: that.NodeId}
 }

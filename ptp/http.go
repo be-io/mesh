@@ -28,6 +28,7 @@ import (
 	"io"
 	"net/http"
 	"runtime/debug"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -138,8 +139,9 @@ func TransportHTTP(ctx prsim.Context, input any, uri string) ([]byte, error) {
 	if out.StatusCode != http.StatusOK {
 		return nil, cause.Errorh(out.StatusCode, string(bo))
 	}
+	oct := tool.Anyone(prsim.ContentType.Get(ctx.GetAttachments()), out.Header.Get("Content-Type"))
 	o := new(Outbound)
-	if err = Decode(bo, o, out.Header.Get("Content-Type")); nil != err {
+	if err = Decode(bo, o, oct); nil != err {
 		return nil, cause.Error(err)
 	}
 	if o.Code != cause.Success.Code {
@@ -328,7 +330,8 @@ func (that *push) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return nil, cause.Error(err)
 		}
 		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(ctx.GetAttachments())) {
-			return nil, aware.Session.Push(ctx, input.Payload, input.Metadata, input.Topic)
+			topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
+			return nil, aware.Session.Push(ctx, input.Payload, input.Metadata, topic)
 		}
 		return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern))
 	})
@@ -354,7 +357,14 @@ func (that *pop) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return nil, cause.Error(err)
 		}
 		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(ctx.GetAttachments())) {
-			return aware.Session.Pop(ctx, types.Duration(time.Duration(input.Timeout)*time.Millisecond), input.Topic)
+			timeout := types.Duration(time.Duration(input.Timeout) * time.Millisecond)
+			if x := prsim.MeshTimeout.Get(ctx.GetAttachments()); "" != x {
+				if t, err := strconv.Atoi(x); nil == err && t > 0 {
+					timeout = types.Duration(time.Duration(t) * time.Millisecond)
+				}
+			}
+			topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
+			return aware.Session.Pop(ctx, timeout, topic)
 		}
 		return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern))
 	})
@@ -380,7 +390,8 @@ func (that *peek) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return nil, cause.Error(err)
 		}
 		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(ctx.GetAttachments())) {
-			return aware.Session.Peek(ctx, input.Topic)
+			topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
+			return aware.Session.Peek(ctx, topic)
 		}
 		return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern))
 	})
@@ -406,7 +417,14 @@ func (that *release) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return nil, cause.Error(err)
 		}
 		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(ctx.GetAttachments())) {
-			return nil, aware.Session.Release(ctx, types.Duration(time.Duration(input.Timeout)*time.Millisecond), input.Topic)
+			timeout := types.Duration(time.Duration(input.Timeout) * time.Millisecond)
+			if x := prsim.MeshTimeout.Get(ctx.GetAttachments()); "" != x {
+				if t, err := strconv.Atoi(x); nil == err && t > 0 {
+					timeout = types.Duration(time.Duration(t) * time.Millisecond)
+				}
+			}
+			topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
+			return nil, aware.Session.Release(ctx, timeout, topic)
 		}
 		return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern))
 	})
