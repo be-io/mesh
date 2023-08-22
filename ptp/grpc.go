@@ -22,6 +22,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"io"
 	"runtime/debug"
 	"strconv"
@@ -126,18 +127,32 @@ func (that *privateTransferProtocolServer) Invoke(ctx context.Context, inbound *
 		if nil != err {
 			return nil, cause.Error(err)
 		}
-		topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), prsim.MeshTopic.Get(inbound.Metadata))
-		timeout := tool.Timestamp(ctx, tool.Anyone(prsim.MeshTimeout.Get(mtx.GetAttachments()), prsim.MeshTimeout.Get(inbound.Metadata)))
 		return WithBound(mtx, func() ([]byte, error) {
 			switch uri.Path {
 			case "/org.ppc.ptp.PrivateTransferTransport/peek":
-				return aware.Session.Peek(ctx, topic)
+				pi := new(PeekInbound)
+				if err = proto.Unmarshal(inbound.Payload, pi); nil != err {
+					return nil, cause.Error(err)
+				}
+				return peekService.ServePeek(mtx, pi)
 			case "/org.ppc.ptp.PrivateTransferTransport/pop":
-				return aware.Session.Pop(ctx, types.Duration(time.Duration(timeout)*time.Millisecond), topic)
+				pi := new(PopInbound)
+				if err = proto.Unmarshal(inbound.Payload, pi); nil != err {
+					return nil, cause.Error(err)
+				}
+				return popService.ServePop(mtx, pi)
 			case "/org.ppc.ptp.PrivateTransferTransport/push":
-				return nil, aware.Session.Push(ctx, inbound.Payload, inbound.Metadata, topic)
+				pi := new(PushInbound)
+				if err = proto.Unmarshal(inbound.Payload, pi); nil != err {
+					return nil, cause.Error(err)
+				}
+				return pushService.ServePush(mtx, pi)
 			case "/org.ppc.ptp.PrivateTransferTransport/release":
-				return nil, aware.Session.Release(ctx, types.Duration(time.Duration(timeout)*time.Millisecond), topic)
+				pi := new(ReleaseInbound)
+				if err = proto.Unmarshal(inbound.Payload, pi); nil != err {
+					return nil, cause.Error(err)
+				}
+				return releaseService.ServeRelease(mtx, pi)
 			default:
 				return nil, cause.NotFound.Error()
 			}
@@ -173,7 +188,7 @@ func (that *privateTransferTransportServer) Peek(ctx context.Context, inbound *P
 			return nil, cause.Error(err)
 		}
 		mtx := mpc.ContextWith(ctx)
-		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(mtx.GetAttachments())) {
+		if x := prsim.MeshTargetNodeId.Get(mtx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
 			topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), inbound.Topic)
 			b, err := aware.Session.Peek(ctx, topic)
 			if nil != err {
@@ -204,7 +219,7 @@ func (that *privateTransferTransportServer) Pop(ctx context.Context, inbound *Po
 			return nil, cause.Error(err)
 		}
 		mtx := mpc.ContextWith(ctx)
-		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(mtx.GetAttachments())) {
+		if x := prsim.MeshTargetNodeId.Get(mtx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
 			timeout := types.Duration(time.Duration(inbound.Timeout) * time.Millisecond)
 			if x := prsim.MeshTimeout.Get(mtx.GetAttachments()); "" != x {
 				if t, err := strconv.Atoi(x); nil == err && t > 0 {
@@ -241,7 +256,7 @@ func (that *privateTransferTransportServer) Push(ctx context.Context, inbound *P
 			return nil, cause.Error(err)
 		}
 		mtx := mpc.ContextWith(ctx)
-		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(mtx.GetAttachments())) {
+		if x := prsim.MeshTargetNodeId.Get(mtx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
 			topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), inbound.Topic)
 			err = aware.Session.Push(ctx, inbound.Payload, inbound.Metadata, topic)
 			if nil != err {
@@ -271,7 +286,7 @@ func (that *privateTransferTransportServer) Release(ctx context.Context, inbound
 			return nil, cause.Error(err)
 		}
 		mtx := mpc.ContextWith(ctx)
-		if strings.EqualFold(env.NodeId, prsim.MeshTargetNodeId.Get(mtx.GetAttachments())) {
+		if x := prsim.MeshTargetNodeId.Get(mtx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
 			timeout := types.Duration(time.Duration(inbound.Timeout) * time.Millisecond)
 			if x := prsim.MeshTimeout.Get(mtx.GetAttachments()); "" != x {
 				if t, err := strconv.Atoi(x); nil == err && t > 0 {
