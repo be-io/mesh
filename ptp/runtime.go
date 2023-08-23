@@ -8,14 +8,19 @@
 package ptp
 
 import (
+	"context"
+	"github.com/be-io/mesh/client/golang/cause"
 	"github.com/be-io/mesh/client/golang/codec"
+	"github.com/be-io/mesh/client/golang/grpc"
 	"github.com/be-io/mesh/client/golang/macro"
 	"github.com/be-io/mesh/client/golang/prsim"
+	"github.com/be-io/mesh/client/golang/types"
 )
 
 func init() {
 	var _ prsim.RuntimeAware = aware
 	macro.Provide(prsim.IRuntimeAware, aware)
+	macro.Provide(prsim.IListener, aware)
 }
 
 var aware = new(runtimeAware)
@@ -28,6 +33,8 @@ type runtimeAware struct {
 	Registry prsim.Registry
 	KMS      prsim.KMS
 	Network  prsim.Network
+	Channel  grpc.Channel
+	Routes   map[string]*types.Route
 }
 
 func (that *runtimeAware) Att() *macro.Att {
@@ -42,5 +49,33 @@ func (that *runtimeAware) Init() error {
 	that.Registry = macro.Load(prsim.IRegistry).Get(macro.MeshSPI).(prsim.Registry)
 	that.KMS = macro.Load(prsim.IKMS).Get(macro.MeshSPI).(prsim.KMS)
 	that.Network = macro.Load(prsim.INetwork).Get(macro.MeshSPI).(prsim.Network)
+	that.Channel = macro.Load(grpc.IChannel).Get(grpc.Name).(grpc.Channel)
+	return nil
+}
+
+func (that *runtimeAware) Btt() []*macro.Btt {
+	return []*macro.Btt{prsim.NetworkRouteRefresh}
+}
+
+func (that *runtimeAware) Listen(ctx context.Context, event *types.Event) error {
+	var routes []*types.Route
+	if err := event.TryGetObject(&routes); nil != err {
+		return cause.Error(err)
+	}
+	rs := map[string]*types.Route{}
+	for _, route := range routes {
+		rs[route.NodeId] = route
+	}
+	that.Routes = rs
+	return nil
+}
+
+func (that *runtimeAware) WeavedCheck(ctx prsim.Context) error {
+	if nil == that.Routes {
+		return cause.NetNotWeave.Error()
+	}
+	if nil == that.Routes[prsim.MeshTargetNodeId.Get(ctx.GetAttachments())] {
+		return cause.NetNotWeave.Error()
+	}
 	return nil
 }

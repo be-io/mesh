@@ -76,7 +76,7 @@ class ReferenceInvokeHandler(Invoker, InvocationHandler):
         name = execution.schema().codec
         codec = ServiceLoader.load(Codec).get(name)
         buff = codec.encode(invocation.get_parameters())
-        future = consumer.consume(address, Mesh.context().get_urn(), execution, buff)
+        future = consumer.consume(address, Mesh.context().get_urn(), execution, buff, invocation.get_parameters())
         if invocation.is_futures():
             return self.deserialize(execution, codec, future)
         return self.deserialize(execution, codec, future)

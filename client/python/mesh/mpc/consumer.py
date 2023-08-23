@@ -6,6 +6,7 @@
 
 from abc import abstractmethod, ABC
 from concurrent.futures import Future
+from typing import Any
 
 from mesh.kinds import Reference
 from mesh.macro import spi
@@ -40,13 +41,14 @@ class Consumer(ABC):
         pass
 
     @abstractmethod
-    def consume(self, address: str, urn: str, execution: Execution[Reference], inbound: bytes) -> Future:
+    def consume(self, address: str, urn: str, execution: Execution[Reference], inbound: bytes, args: Any) -> Future:
         """
         Consume the input payload.
         :param address: Remote address.
         :param urn: Actual uniform resource domain name.
         :param execution: Service reference.
         :param inbound: Input arguments.
+        :param args: Input typed arguments.
         :return: Output payload
         """
         pass

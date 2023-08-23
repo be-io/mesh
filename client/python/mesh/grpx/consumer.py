@@ -13,6 +13,7 @@ import mesh.tool as tool
 from mesh.cause import TimeoutException, MeshException, MeshCode
 from mesh.context import Mesh
 from mesh.environ import System
+from mesh.grpx.bfia import BfiaBinding, bfia_consume
 from mesh.grpx.channels import GrpcChannels
 from mesh.kinds import Reference
 from mesh.macro import spi
@@ -37,21 +38,12 @@ class GrpcConsumer(Consumer):
         """ Do not need to implement """
         pass
 
-    def consume(self, address: str, urn: str, execution: Execution[Reference], inbound: bytes) -> Future:
-        """
-        request_iterator=iterator,
-        timeout=None,
-        metadata=None,
-        credentials=None,
-        wait_for_ready=None,
-        compression=None
-        :param address:
-        :param urn:
-        :param execution:
-        :param inbound:
-        :return:
-        """
+    def consume(self, address: str, urn: str, execution: Execution[Reference], inbound: bytes, args: Any) -> Future:
         try:
+            binding = BfiaBinding(urn, args)
+            if "" != binding.path:
+                return bfia_consume(address, binding, execution, inbound, self.channel)
+
             ct = Mesh.context().get_attribute(Mesh.TIMEOUT)
             timeout = (ct if ct else execution.schema().timeout) / 1000
             outbound = self.channel.unary(address, inbound, timeout, [])

@@ -9,6 +9,7 @@ package ptp
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -75,7 +76,27 @@ var (
 	releaseService = new(release)
 )
 
-func ServeHTTP[T any](w http.ResponseWriter, r *http.Request, fn func(ctx prsim.Context, input *T) ([]byte, error)) {
+func WithHTTPBound(ctx context.Context, fn func() ([]byte, error)) *TransportOutbound {
+	buff, err := fn()
+	if nil == err {
+		return &TransportOutbound{
+			Metadata: map[string]string{},
+			Payload:  buff,
+			Code:     cause.Success.Code,
+			Message:  cause.Success.Message,
+		}
+	}
+	log.Warn(ctx, err.Error())
+	code, msg := cause.Parse(err)
+	return &TransportOutbound{
+		Metadata: map[string]string{},
+		Payload:  buff,
+		Code:     code,
+		Message:  msg,
+	}
+}
+
+func ServeHTTP[T any](w http.ResponseWriter, r *http.Request, fn func(ctx prsim.Context, contentType string, input *T) ([]byte, error)) {
 	ctx := mpc.HTTPTracerContext(r)
 	for k, v := range prsim.GetMetadata(r.Header) {
 		ctx.GetAttachments()[k] = v
@@ -95,11 +116,11 @@ func ServeHTTP[T any](w http.ResponseWriter, r *http.Request, fn func(ctx prsim.
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	b, err := fn(ctx, &input)
+	b, err := fn(ctx, contentType, &input)
 	if ok := cause.WriteHTTPError(err, w); ok {
 		return
 	}
-	v := WithBound(ctx, func() ([]byte, error) { return b, err })
+	v := WithHTTPBound(ctx, func() ([]byte, error) { return b, err })
 	buff, err := Encode(v, contentType)
 	if nil != err {
 		log.Warn(ctx, err.Error())
@@ -114,8 +135,11 @@ func ServeHTTP[T any](w http.ResponseWriter, r *http.Request, fn func(ctx prsim.
 	}
 }
 
-func TransportHTTP(ctx prsim.Context, input any, uri string) ([]byte, error) {
-	b, err := Encode(input, httpx.MIMEPROTOBUF)
+func TransportHTTP(ctx prsim.Context, input any, uri string, contentType string) ([]byte, error) {
+	if err := aware.WeavedCheck(ctx); nil != err {
+		return nil, cause.Error(err)
+	}
+	b, err := Encode(input, contentType)
 	if nil != err {
 		return nil, cause.Error(err)
 	}
@@ -123,7 +147,7 @@ func TransportHTTP(ctx prsim.Context, input any, uri string) ([]byte, error) {
 		Metadata: ctx.GetAttachments(),
 		Payload:  b,
 	}
-	bi, err := proto.Marshal(i)
+	bi, err := Encode(i, contentType)
 	if nil != err {
 		return nil, cause.Error(err)
 	}
@@ -132,7 +156,7 @@ func TransportHTTP(ctx prsim.Context, input any, uri string) ([]byte, error) {
 		return nil, cause.Error(err)
 	}
 	prsim.SetMetadata(ctx, in.Header)
-	in.Header.Set("Content-Type", httpx.MIMEPROTOBUF)
+	in.Header.Set("Content-Type", contentType)
 	prsim.MeshURI.SetHeader(in.Header, uri)
 	out, err := tool.Client.Do(in)
 	if nil != err {
@@ -158,6 +182,9 @@ func TransportHTTP(ctx prsim.Context, input any, uri string) ([]byte, error) {
 }
 
 func TransportGRPC(ctx prsim.Context, input any, uri string) (*Outbound, error) {
+	if err := aware.WeavedCheck(ctx); nil != err {
+		return nil, cause.Error(err)
+	}
 	b, err := Encode(input, httpx.MIMEPROTOBUF)
 	if nil != err {
 		return nil, cause.Error(err)
@@ -167,7 +194,13 @@ func TransportGRPC(ctx prsim.Context, input any, uri string) (*Outbound, error) 
 		Payload:  b,
 	}
 	prsim.MeshURI.Set(ctx.GetAttachments(), uri)
-	return privateTransferProtocol.Invoke(ctx, i)
+	c, cancel, err := aware.Channel.DialContext(ctx, "127.0.0.1:7304")
+	defer cancel()
+	if nil != err {
+		return nil, cause.Error(err)
+	}
+	defer func() { log.Catch(c.Close()) }()
+	return NewPrivateTransferProtocolClient(c).Invoke(ctx, i)
 }
 
 func Encode(v any, contentType string) ([]byte, error) {
@@ -236,7 +269,7 @@ func (that *refresh) Att() *macro.Att {
 }
 
 func (that *refresh) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ServeHTTP(w, r, func(ctx prsim.Context, input *types.Environ) ([]byte, error) {
+	ServeHTTP(w, r, func(ctx prsim.Context, contentType string, input *types.Environ) ([]byte, error) {
 		return nil, aware.KMS.Reset(ctx, input)
 	})
 }
@@ -252,7 +285,7 @@ func (that *register) Att() *macro.Att {
 }
 
 func (that *register) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ServeHTTP(w, r, func(ctx prsim.Context, input *types.Registration[any]) ([]byte, error) {
+	ServeHTTP(w, r, func(ctx prsim.Context, contentType string, input *types.Registration[any]) ([]byte, error) {
 		if nil == input || "" == input.InstanceId || "" == input.Address || "" == input.Name || "" == input.Kind || nil == input.Content {
 			return nil, cause.Validate.Error()
 		}
@@ -271,7 +304,7 @@ func (that *update) Att() *macro.Att {
 }
 
 func (that *update) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ServeHTTP(w, r, func(ctx prsim.Context, input *types.Route) ([]byte, error) {
+	ServeHTTP(w, r, func(ctx prsim.Context, contentType string, input *types.Route) ([]byte, error) {
 		if nil == input || "" == input.NodeId || "" == input.InstId || "" == input.Address {
 			return nil, cause.Validate.Error()
 		}
@@ -290,7 +323,7 @@ func (that *weave) Att() *macro.Att {
 }
 
 func (that *weave) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ServeHTTP(w, r, func(ctx prsim.Context, input *types.Route) ([]byte, error) {
+	ServeHTTP(w, r, func(ctx prsim.Context, contentType string, input *types.Route) ([]byte, error) {
 		if nil == input || "" == input.NodeId {
 			return nil, cause.Validate.Error()
 		}
@@ -309,7 +342,7 @@ func (that *ack) Att() *macro.Att {
 }
 
 func (that *ack) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ServeHTTP(w, r, func(ctx prsim.Context, input *types.Route) ([]byte, error) {
+	ServeHTTP(w, r, func(ctx prsim.Context, contentType string, input *types.Route) ([]byte, error) {
 		if nil == input || "" == input.NodeId {
 			return nil, cause.Validate.Error()
 		}
@@ -331,7 +364,7 @@ func (that *push) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ServeHTTP(w, r, that.ServePush)
 }
 
-func (that *push) ServePush(ctx prsim.Context, input *PushInbound) ([]byte, error) {
+func (that *push) ServePush(ctx prsim.Context, contentType string, input *PushInbound) ([]byte, error) {
 	if nil == input || nil == input.Payload {
 		return nil, cause.Validate.Error()
 	}
@@ -343,7 +376,7 @@ func (that *push) ServePush(ctx prsim.Context, input *PushInbound) ([]byte, erro
 		topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
 		return nil, aware.Session.Push(ctx, input.Payload, input.Metadata, topic)
 	}
-	return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern))
+	return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern), contentType)
 }
 
 type pop struct {
@@ -360,7 +393,7 @@ func (that *pop) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ServeHTTP(w, r, that.ServePop)
 }
 
-func (that *pop) ServePop(ctx prsim.Context, input *PopInbound) ([]byte, error) {
+func (that *pop) ServePop(ctx prsim.Context, contentType string, input *PopInbound) ([]byte, error) {
 	if nil == input {
 		return nil, cause.Validate.Error()
 	}
@@ -378,7 +411,7 @@ func (that *pop) ServePop(ctx prsim.Context, input *PopInbound) ([]byte, error) 
 		topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
 		return aware.Session.Pop(ctx, timeout, topic)
 	}
-	return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern))
+	return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern), contentType)
 }
 
 type peek struct {
@@ -395,7 +428,7 @@ func (that *peek) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ServeHTTP(w, r, that.ServePeek)
 }
 
-func (that *peek) ServePeek(ctx prsim.Context, input *PeekInbound) ([]byte, error) {
+func (that *peek) ServePeek(ctx prsim.Context, contentType string, input *PeekInbound) ([]byte, error) {
 	if nil == input {
 		return nil, cause.Validate.Error()
 	}
@@ -407,7 +440,7 @@ func (that *peek) ServePeek(ctx prsim.Context, input *PeekInbound) ([]byte, erro
 		topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
 		return aware.Session.Peek(ctx, topic)
 	}
-	return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern))
+	return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern), contentType)
 }
 
 type release struct {
@@ -424,7 +457,7 @@ func (that *release) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ServeHTTP(w, r, that.ServeRelease)
 }
 
-func (that *release) ServeRelease(ctx prsim.Context, input *ReleaseInbound) ([]byte, error) {
+func (that *release) ServeRelease(ctx prsim.Context, contentType string, input *ReleaseInbound) ([]byte, error) {
 	if nil == input {
 		return nil, cause.Validate.Error()
 	}
@@ -442,7 +475,7 @@ func (that *release) ServeRelease(ctx prsim.Context, input *ReleaseInbound) ([]b
 		topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
 		return nil, aware.Session.Release(ctx, timeout, topic)
 	}
-	return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern))
+	return TransportHTTP(ctx, input, fmt.Sprintf("https://ptp.cn%s", that.Att().Pattern), contentType)
 }
 
 type invoke struct {
@@ -456,7 +489,7 @@ func (that *invoke) Att() *macro.Att {
 }
 
 func (that *invoke) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ServeHTTP(w, r, func(ctx prsim.Context, input *Inbound) ([]byte, error) {
+	ServeHTTP(w, r, func(ctx prsim.Context, contentType string, input *Inbound) ([]byte, error) {
 		if nil == input {
 			return nil, cause.Validate.Error()
 		}
@@ -467,28 +500,28 @@ func (that *invoke) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		switch uri.Path {
 		case "/v1/interconn/chan/pop":
 			pi := new(PopInbound)
-			if err = proto.Unmarshal(input.Payload, pi); nil != err {
+			if err = Decode(input.Payload, pi, contentType); nil != err {
 				return nil, cause.Error(err)
 			}
-			return popService.ServePop(ctx, pi)
+			return popService.ServePop(ctx, contentType, pi)
 		case "/v1/interconn/chan/push":
 			pi := new(PushInbound)
-			if err = proto.Unmarshal(input.Payload, pi); nil != err {
+			if err = Decode(input.Payload, pi, contentType); nil != err {
 				return nil, cause.Error(err)
 			}
-			return pushService.ServePush(ctx, pi)
+			return pushService.ServePush(ctx, contentType, pi)
 		case "/v1/interconn/chan/peek":
 			pi := new(PeekInbound)
-			if err = proto.Unmarshal(input.Payload, pi); nil != err {
+			if err = Decode(input.Payload, pi, contentType); nil != err {
 				return nil, cause.Error(err)
 			}
-			return peekService.ServePeek(ctx, pi)
+			return peekService.ServePeek(ctx, contentType, pi)
 		case "/v1/interconn/chan/release":
 			pi := new(ReleaseInbound)
-			if err = proto.Unmarshal(input.Payload, pi); nil != err {
+			if err = Decode(input.Payload, pi, contentType); nil != err {
 				return nil, cause.Error(err)
 			}
-			return releaseService.ServeRelease(ctx, pi)
+			return releaseService.ServeRelease(ctx, contentType, pi)
 		case "/v1/interconn/net/weave":
 			var route types.Route
 			if _, err = aware.Codec.Decode(bytes.NewBuffer(input.Payload), &route); nil != err {
@@ -518,7 +551,7 @@ func (that *transport) Att() *macro.Att {
 }
 
 func (that *transport) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	ServeHTTP(w, r, func(ctx prsim.Context, input *Inbound) ([]byte, error) {
+	ServeHTTP(w, r, func(ctx prsim.Context, contentType string, input *Inbound) ([]byte, error) {
 		if nil == input {
 			return nil, cause.Validate.Error()
 		}

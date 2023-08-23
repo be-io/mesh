@@ -48,7 +48,8 @@ class MeshTransport(Transport):
         pass
 
     def finalize(self, session_key: str):
-        self.sessions.__delitem__(session_key)
+        if self.sessions.get(session_key, None):
+            self.sessions.__delitem__(session_key)
 
     @staticmethod
     def session_key(session_id: str, metadata: Dict[str, str]) -> str:

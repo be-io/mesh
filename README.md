@@ -82,6 +82,9 @@ from node to node.
 ### Cli usage
 
 ```bash
+# Container
+docker run -d -v 7304:7304 bfia/mesh:latest
+
 # MacOS
 brew install mesh
 
@@ -90,15 +93,12 @@ yum install mesh -y
 
 # Alpine
 apk add mesh
-
-# Container
-docker run -d bfia/mesh:latest
 ```
 
 Mesh man usage
 
 ```bash
-ducer@coyzeng mesh % ./bin/mesh --help
+ducer@coyzeng mesh % mesh --help
 
 Usage:
   Mesh [flags]
@@ -151,18 +151,18 @@ Java
 <dependency>
     <groupId>io.be.mesh</groupId>
     <artfactId>mesh</artfactId>
-    <version>0.0.1</version>
+    <version>0.0.17</version>
 </dependency>
 ```
 
 Python
 
 ```bash
-poetry add imesh
+poetry add imesh==0.0.17
 
 or
 
-pip install imesh
+pip install imesh==0.0.17
 ```
 
 Typescript

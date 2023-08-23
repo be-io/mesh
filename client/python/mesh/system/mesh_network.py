@@ -30,8 +30,9 @@ class MeshNetwork(Network):
         environ.inst_id = "JG0000000000000000"
         Mesh.context().set_attribute(self.environ_key, environ)
 
-        self.environ = Mesh.context_safe(lambda: self.get_environ_safe())
-        return self.environ
+        # self.environ = Mesh.context_safe(lambda: self.get_environ_safe())
+        # return self.environ
+        return environ
 
     def get_environ_safe(self) -> Environ:
         Mesh.context().get_principals().clear()

@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"github.com/be-io/mesh/client/golang/cause"
 	"github.com/be-io/mesh/client/golang/grpc"
+	httpx "github.com/be-io/mesh/client/golang/http"
 	"github.com/be-io/mesh/client/golang/log"
 	"github.com/be-io/mesh/client/golang/macro"
 	"github.com/be-io/mesh/client/golang/mpc"
@@ -22,7 +23,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/proto"
 	"io"
 	"runtime/debug"
 	"strconv"
@@ -40,7 +40,7 @@ func init() {
 	macro.Provide(grpc.IRPCService, privateTransferTransport)
 }
 
-func WithBound(ctx context.Context, fn func() ([]byte, error)) *Outbound {
+func WithGRPCBound(ctx context.Context, fn func() ([]byte, error)) *Outbound {
 	buff, err := fn()
 	if nil == err {
 		return &Outbound{
@@ -127,32 +127,33 @@ func (that *privateTransferProtocolServer) Invoke(ctx context.Context, inbound *
 		if nil != err {
 			return nil, cause.Error(err)
 		}
-		return WithBound(mtx, func() ([]byte, error) {
+		contentType := httpx.MIMEPROTOBUF
+		return WithGRPCBound(mtx, func() ([]byte, error) {
 			switch uri.Path {
 			case "/org.ppc.ptp.PrivateTransferTransport/peek":
 				pi := new(PeekInbound)
-				if err = proto.Unmarshal(inbound.Payload, pi); nil != err {
+				if err = Decode(inbound.Payload, pi, contentType); nil != err {
 					return nil, cause.Error(err)
 				}
-				return peekService.ServePeek(mtx, pi)
+				return peekService.ServePeek(mtx, contentType, pi)
 			case "/org.ppc.ptp.PrivateTransferTransport/pop":
 				pi := new(PopInbound)
-				if err = proto.Unmarshal(inbound.Payload, pi); nil != err {
+				if err = Decode(inbound.Payload, pi, contentType); nil != err {
 					return nil, cause.Error(err)
 				}
-				return popService.ServePop(mtx, pi)
+				return popService.ServePop(mtx, contentType, pi)
 			case "/org.ppc.ptp.PrivateTransferTransport/push":
 				pi := new(PushInbound)
-				if err = proto.Unmarshal(inbound.Payload, pi); nil != err {
+				if err = Decode(inbound.Payload, pi, contentType); nil != err {
 					return nil, cause.Error(err)
 				}
-				return pushService.ServePush(mtx, pi)
+				return pushService.ServePush(mtx, contentType, pi)
 			case "/org.ppc.ptp.PrivateTransferTransport/release":
 				pi := new(ReleaseInbound)
-				if err = proto.Unmarshal(inbound.Payload, pi); nil != err {
+				if err = Decode(inbound.Payload, pi, contentType); nil != err {
 					return nil, cause.Error(err)
 				}
-				return releaseService.ServeRelease(mtx, pi)
+				return releaseService.ServeRelease(mtx, contentType, pi)
 			default:
 				return nil, cause.NotFound.Error()
 			}
