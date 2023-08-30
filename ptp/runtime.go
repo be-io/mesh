@@ -65,6 +65,7 @@ func (that *runtimeAware) Listen(ctx context.Context, event *types.Event) error 
 	rs := map[string]*types.Route{}
 	for _, route := range routes {
 		rs[route.NodeId] = route
+		rs[route.InstId] = route
 	}
 	that.Routes = rs
 	return nil
@@ -74,8 +75,13 @@ func (that *runtimeAware) WeavedCheck(ctx prsim.Context) error {
 	if nil == that.Routes {
 		return cause.NetNotWeave.Error()
 	}
-	if nil == that.Routes[prsim.MeshTargetNodeId.Get(ctx.GetAttachments())] {
-		return cause.NetNotWeave.Error()
+	nodeId := prsim.MeshTargetNodeId.Get(ctx.GetAttachments())
+	if nil != that.Routes[nodeId] {
+		return nil
 	}
-	return nil
+	instId := prsim.MeshTargetInstId.Get(ctx.GetAttachments())
+	if nil != that.Routes[instId] {
+		return nil
+	}
+	return cause.NetNotWeave.Error()
 }
