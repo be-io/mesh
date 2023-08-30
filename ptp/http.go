@@ -76,6 +76,22 @@ var (
 	releaseService = new(release)
 )
 
+func IsLocalnet(ctx prsim.Context) (bool, error) {
+	env, err := aware.Network.GetEnviron(ctx)
+	if nil != err {
+		return false, cause.Error(err)
+	}
+	instId := strings.TrimSpace(prsim.MeshTargetInstId.Get(ctx.GetAttachments()))
+	if "" != instId {
+		return strings.EqualFold(env.InstId, instId), nil
+	}
+	nodeId := strings.TrimSpace(prsim.MeshTargetNodeId.Get(ctx.GetAttachments()))
+	if "" != nodeId {
+		return strings.EqualFold(env.NodeId, nodeId), nil
+	}
+	return "" == instId && "" == nodeId, nil
+}
+
 func WithHTTPBound(ctx context.Context, fn func() ([]byte, error)) *TransportOutbound {
 	buff, err := fn()
 	if nil == err {
@@ -368,11 +384,11 @@ func (that *push) ServePush(ctx prsim.Context, contentType string, input *PushIn
 	if nil == input || nil == input.Payload {
 		return nil, cause.Validate.Error()
 	}
-	env, err := aware.Network.GetEnviron(ctx)
+	isLan, err := IsLocalnet(ctx)
 	if nil != err {
 		return nil, cause.Error(err)
 	}
-	if x := prsim.MeshTargetNodeId.Get(ctx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
+	if isLan {
 		topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
 		return nil, aware.Session.Push(ctx, input.Payload, input.Metadata, topic)
 	}
@@ -397,11 +413,11 @@ func (that *pop) ServePop(ctx prsim.Context, contentType string, input *PopInbou
 	if nil == input {
 		return nil, cause.Validate.Error()
 	}
-	env, err := aware.Network.GetEnviron(ctx)
+	isLan, err := IsLocalnet(ctx)
 	if nil != err {
 		return nil, cause.Error(err)
 	}
-	if x := prsim.MeshTargetNodeId.Get(ctx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
+	if isLan {
 		timeout := types.Duration(time.Duration(input.Timeout) * time.Millisecond)
 		if x := prsim.MeshTimeout.Get(ctx.GetAttachments()); "" != x {
 			if t, err := strconv.Atoi(x); nil == err && t > 0 {
@@ -432,11 +448,11 @@ func (that *peek) ServePeek(ctx prsim.Context, contentType string, input *PeekIn
 	if nil == input {
 		return nil, cause.Validate.Error()
 	}
-	env, err := aware.Network.GetEnviron(ctx)
+	isLan, err := IsLocalnet(ctx)
 	if nil != err {
 		return nil, cause.Error(err)
 	}
-	if x := prsim.MeshTargetNodeId.Get(ctx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
+	if isLan {
 		topic := tool.Anyone(prsim.MeshTopic.Get(ctx.GetAttachments()), input.Topic)
 		return aware.Session.Peek(ctx, topic)
 	}
@@ -461,11 +477,11 @@ func (that *release) ServeRelease(ctx prsim.Context, contentType string, input *
 	if nil == input {
 		return nil, cause.Validate.Error()
 	}
-	env, err := aware.Network.GetEnviron(ctx)
+	isLan, err := IsLocalnet(ctx)
 	if nil != err {
 		return nil, cause.Error(err)
 	}
-	if x := prsim.MeshTargetNodeId.Get(ctx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
+	if isLan {
 		timeout := types.Duration(time.Duration(input.Timeout) * time.Millisecond)
 		if x := prsim.MeshTimeout.Get(ctx.GetAttachments()); "" != x {
 			if t, err := strconv.Atoi(x); nil == err && t > 0 {

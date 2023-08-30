@@ -26,7 +26,6 @@ import (
 	"io"
 	"runtime/debug"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -184,12 +183,12 @@ func (that *privateTransferTransportServer) Metadata() (*grpc2.ServiceDesc, inte
 
 func (that *privateTransferTransportServer) Peek(ctx context.Context, inbound *PeekInbound) (*TransportOutbound, error) {
 	return ServeGRPC(ctx, func() (*TransportOutbound, error) {
-		env, err := aware.Network.GetEnviron(ctx)
+		mtx := mpc.ContextWith(ctx)
+		isLan, err := IsLocalnet(mtx)
 		if nil != err {
 			return nil, cause.Error(err)
 		}
-		mtx := mpc.ContextWith(ctx)
-		if x := prsim.MeshTargetNodeId.Get(mtx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
+		if isLan {
 			topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), inbound.Topic)
 			b, err := aware.Session.Peek(ctx, topic)
 			if nil != err {
@@ -215,12 +214,12 @@ func (that *privateTransferTransportServer) Peek(ctx context.Context, inbound *P
 
 func (that *privateTransferTransportServer) Pop(ctx context.Context, inbound *PopInbound) (*TransportOutbound, error) {
 	return ServeGRPC(ctx, func() (*TransportOutbound, error) {
-		env, err := aware.Network.GetEnviron(ctx)
+		mtx := mpc.ContextWith(ctx)
+		isLan, err := IsLocalnet(mtx)
 		if nil != err {
 			return nil, cause.Error(err)
 		}
-		mtx := mpc.ContextWith(ctx)
-		if x := prsim.MeshTargetNodeId.Get(mtx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
+		if isLan {
 			timeout := types.Duration(time.Duration(inbound.Timeout) * time.Millisecond)
 			if x := prsim.MeshTimeout.Get(mtx.GetAttachments()); "" != x {
 				if t, err := strconv.Atoi(x); nil == err && t > 0 {
@@ -252,12 +251,12 @@ func (that *privateTransferTransportServer) Pop(ctx context.Context, inbound *Po
 
 func (that *privateTransferTransportServer) Push(ctx context.Context, inbound *PushInbound) (*TransportOutbound, error) {
 	return ServeGRPC(ctx, func() (*TransportOutbound, error) {
-		env, err := aware.Network.GetEnviron(ctx)
+		mtx := mpc.ContextWith(ctx)
+		isLan, err := IsLocalnet(mtx)
 		if nil != err {
 			return nil, cause.Error(err)
 		}
-		mtx := mpc.ContextWith(ctx)
-		if x := prsim.MeshTargetNodeId.Get(mtx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
+		if isLan {
 			topic := tool.Anyone(prsim.MeshTopic.Get(mtx.GetAttachments()), inbound.Topic)
 			err = aware.Session.Push(ctx, inbound.Payload, inbound.Metadata, topic)
 			if nil != err {
@@ -282,12 +281,12 @@ func (that *privateTransferTransportServer) Push(ctx context.Context, inbound *P
 
 func (that *privateTransferTransportServer) Release(ctx context.Context, inbound *ReleaseInbound) (*TransportOutbound, error) {
 	return ServeGRPC(ctx, func() (*TransportOutbound, error) {
-		env, err := aware.Network.GetEnviron(ctx)
+		mtx := mpc.ContextWith(ctx)
+		isLan, err := IsLocalnet(mtx)
 		if nil != err {
 			return nil, cause.Error(err)
 		}
-		mtx := mpc.ContextWith(ctx)
-		if x := prsim.MeshTargetNodeId.Get(mtx.GetAttachments()); "" == x || strings.EqualFold(env.NodeId, x) {
+		if isLan {
 			timeout := types.Duration(time.Duration(inbound.Timeout) * time.Millisecond)
 			if x := prsim.MeshTimeout.Get(mtx.GetAttachments()); "" != x {
 				if t, err := strconv.Atoi(x); nil == err && t > 0 {
