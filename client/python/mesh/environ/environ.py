@@ -172,7 +172,7 @@ class Environ:
 
     @Cache
     def get_max_channels(self) -> int:
-        return int(self.get_property('200', self.__mesh_max_channels))
+        return int(self.get_property('3', self.__mesh_max_channels))
 
     @Cache
     def get_min_channels(self) -> int:

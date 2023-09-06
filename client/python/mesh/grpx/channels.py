@@ -30,6 +30,14 @@ class GrpcChannels:
             channel.close()
 
     def create_if_absent(self, address: str) -> "GrpcMultiplexChannel":
+        channel = self.make_channel(address)
+        if channel.counter > 100:
+            self.channels.__delitem__(address)
+            channel.close()
+            channel = self.make_channel(address)
+        return channel
+
+    def make_channel(self, address: str) -> "GrpcMultiplexChannel":
         channel = self.channels.get(address, None)
         if not channel:
             self.channels[address] = channel = GrpcMultiplexChannel(address, self.interceptor)
@@ -98,6 +106,7 @@ class GrpcMultiplexChannel(grpc.Channel):
             channel.__exit__(exc_type, exc_val, exc_tb)
 
     def __init__(self, address: str, *interceptors):
+        self.counter = 0
         self.address = address
         self.interceptors = interceptors
         self.channels: List[grpc.Channel] = []
@@ -144,3 +153,6 @@ class GrpcMultiplexChannel(grpc.Channel):
             ("grpc.keepalive_time_ms", 1000 * 12),
             ("grpc.keepalive_timeout_ms", 1000 * 12),
         ]
+
+    def incr(self):
+        self.counter += 1
