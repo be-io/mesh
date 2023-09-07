@@ -92,6 +92,12 @@ class MeshSession(Session):
         Metadata.MESH_SESSION_ID.set(Mesh.context().get_attachments(), self.session_id)
 
         if not remote:
+            nk = Metadata.MESH_TARGET_NODE_ID.key()
+            ik = Metadata.MESH_TARGET_INST_ID.key()
+            if Mesh.context().get_attachments().__contains__(nk):
+                Mesh.context().get_attachments().__delitem__(nk)
+            if Mesh.context().get_attachments().__contains__(ik):
+                Mesh.context().get_attachments().__delitem__(ik)
             return fn()
 
         target_node_id = Metadata.MESH_TARGET_NODE_ID.get(Mesh.context().get_attachments())
