@@ -13,7 +13,10 @@ RUN apk add gcc g++ make git wget tzdata upx libpcap-dev openssh
 RUN --mount=type=cache,mode=0777,target=/root/.cache/go-build --mount=type=cache,mode=0777,target=/root/go/pkg go build -ldflags "-linkmode external -extldflags -static -s -w $flags" -o /bin/mesh
 RUN upx -9 /bin/mesh
 
-FROM alpine
+FROM alpine:3.18
+
+RUN addgroup -S app && adduser -S app -G app
+USER app
 
 MAINTAINER coyzeng@gmail.com
 

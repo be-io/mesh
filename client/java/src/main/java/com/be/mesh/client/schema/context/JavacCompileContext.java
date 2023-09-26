@@ -51,7 +51,6 @@ public class JavacCompileContext implements CompileContext {
         this.fileManager = ToolProvider.getSystemJavaCompiler().getStandardFileManager(this.diagnostics,
                 Locale.getDefault(),
                 Charset.defaultCharset());
-        this.fileManager = new JavacFileManager(this.fileManager);
         return this;
     }
 

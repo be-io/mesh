@@ -298,7 +298,7 @@ public class ServletBoostFilter implements Filter {
             cacheEntity.setVersion("1.0.0");
             cacheEntity.setTimestamp(System.currentTimeMillis());
             cacheEntity.setDuration(Duration.ofSeconds(sc.getMaxAge()).toMillis());
-            cacheEntity.setKey(name);
+            cacheEntity.setUnique(name);
             cacheEntity.setEntity(entity);
             CACHE.hset(getSet(this.sc), cacheEntity);
         }

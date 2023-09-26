@@ -85,7 +85,7 @@ public interface Cache {
         cell.setEntity(Entity.wrap(value));
         cell.setTimestamp(System.currentTimeMillis());
         cell.setDuration(duration.toMillis());
-        cell.setKey(key);
+        cell.setUnique(key);
         this.put(cell);
     }
 
