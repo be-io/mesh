@@ -62,9 +62,9 @@ public class X509 implements Crypt {
      * @param isRsaNotEcc {@code true}：使用 RSA 加密算法；{@code false}：使用 ECC（SM2）加密算法
      */
     public X509(boolean isRsaNotEcc) {
-        this.ca = isRsaNotEcc ? new RSA2() : new SM2();
+        this.ca = new RSA2();
         this.keyPrefix = isRsaNotEcc ? "" : "EC ";
-        this.signatureAlgo = isRsaNotEcc ? RSA2.SIGNATURE_ALGORITHM : SM2.SIGNATURE_ALGORITHM;
+        this.signatureAlgo = RSA2.SIGNATURE_ALGORITHM;
     }
 
     @Override

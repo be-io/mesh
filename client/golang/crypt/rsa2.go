@@ -13,13 +13,13 @@ import (
 	"crypto"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/x509"
 	"github.com/be-io/mesh/client/golang/cause"
 	"github.com/be-io/mesh/client/golang/macro"
 	"github.com/be-io/mesh/client/golang/prsim"
 	"io"
-	"io/ioutil"
 )
 
 func init() {
@@ -59,7 +59,7 @@ func (that *rsa2) Encrypt(ctx context.Context, buff []byte, features map[string]
 		if len(buffer) < 1 {
 			break
 		}
-		cipher, err := rsa.EncryptPKCS1v15(rand.Reader, pk, buffer)
+		cipher, err := rsa.EncryptOAEP(sha1.New(), rand.Reader, pk, buffer, nil)
 		if nil != err {
 			return nil, cause.Error(err)
 		}
@@ -78,14 +78,14 @@ func (that *rsa2) Decrypt(ctx context.Context, buff []byte, features map[string]
 	var output bytes.Buffer
 	r := bytes.NewBuffer(buff)
 	for {
-		buffer, err := ioutil.ReadAll(io.LimitReader(r, MaxDecryptBlockSize))
+		buffer, err := io.ReadAll(io.LimitReader(r, MaxDecryptBlockSize))
 		if nil != err {
 			return nil, cause.Error(err)
 		}
 		if len(buffer) < 1 {
 			break
 		}
-		explain, err := rsa.DecryptPKCS1v15(rand.Reader, pk, buffer)
+		explain, err := rsa.DecryptOAEP(sha1.New(), rand.Reader, pk, buffer, nil)
 		if nil != err {
 			return nil, cause.Error(err)
 		}

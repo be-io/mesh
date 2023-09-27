@@ -57,7 +57,6 @@ public interface Context extends Serializable {
         MESH_TARGET_INST_ID("x-ptp-target-inst-id"),
         MESH_SESSION_ID("x-ptp-session-id"),
         MESH_TOPIC("x-ptp-topic"),
-        MESH_TIMEOUT("x-ptp-timeout"),
         ;
         private final String key;
 

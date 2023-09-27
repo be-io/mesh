@@ -69,7 +69,7 @@ public class RollingFileAppender<E> extends ch.qos.logback.core.rolling.RollingF
                 if (writable(pmp)) {
                     return String.join(File.separator, Paths.get(pmp).getParent().toString(), "app-%d{yyyy-MM}.%i.log");
                 }
-                return String.join(File.separator, Paths.get(getRecommendPath()).getParent().toString(), Tool.MESH_NAME.get() + "-%d{yyyy-MM}.%i.log");
+                return String.join(File.separator, Paths.get(getRecommendPath()).getParent().toString(), "app-%d{yyyy-MM}.%i.log");
             } finally {
                 Envs.release();
             }
@@ -96,12 +96,12 @@ public class RollingFileAppender<E> extends ch.qos.logback.core.rolling.RollingF
 
         private String getPromTailPath() {
             String home = Tool.getProperty(String.join(File.separator, "", "var", "log", "be"), "LOG_HOME", "LOG.HOME", "log_home", "log.home");
-            String name = Tool.getProperty(Tool.MESH_NAME.get(), "APP_NAME");
+            String name = Tool.getProperty("mesh", "APP_NAME");
             return String.join(File.separator, home, name, "app.log");
         }
 
         private String getRecommendPath() {
-            return String.join(File.separator, System.getProperty("user.home"), "logs", String.format("%s.log", Tool.MESH_NAME.get()));
+            return String.join(File.separator, System.getProperty("user.home"), "logs", "app.log");
         }
     }
 

@@ -26,6 +26,6 @@ public class CacheEntity implements Serializable {
     private long timestamp;
     @Index(15)
     private long duration;
-    @Index(20)
-    private String key;
+    @Index(value = 20, name = "key")
+    private String unique;
 }
