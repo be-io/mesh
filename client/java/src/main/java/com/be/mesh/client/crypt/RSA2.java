@@ -25,7 +25,7 @@ public class RSA2 implements Crypt {
     public static final int KEY_SIZE = 2048;
     public static final String KEY_ALGORITHM = "RSA";
     public static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
-    private static final String RSA_TYPE = "RSA/ECB/PKCS1Padding"; //"RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
+    private static final String RSA_TYPE = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING"; //"RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
     private static final int MAX_ENCRYPT_BLOCK_SIZE = 244; // RSA2最大加密明文大小(2048/8-11=244)
     private static final int MAX_DECRYPT_BLOCK_SIZE = 256; // RSA2最大解密密文大小(2048/8=256)
 
