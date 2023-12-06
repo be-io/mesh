@@ -125,7 +125,7 @@ func (that *SnapShot) withRemoteRoute(ctx context.Context, routes *Routes) {
 		rs := routes.IfAbsent(route.NodeId, func(n string) *dynamic.Service {
 			return that.remoteService(ctx, n, routes, "https", route.NodeId, that.supervise(route), route.URC())
 		})
-		rr := fmt.Sprintf("((HeaderRegexp(`x-ptp-target-node-id`, `%s`) || HeaderRegexp(`x-ptp-target-inst-id`, `%s`)) && (PathRegexp(`/v1/interconn/chan/invoke.*`) || PathRegexp(`/v1/interconn/chan/transport.*`) || PathRegexp(`/org.ppc.ptp.PrivateTransferProtocol/invoke.*`) || PathRegexp(`/org.ppc.ptp.PrivateTransferProtocol/transport.*`))) || HeaderRegexp(`mesh-urn`, `%s`)", route.NodeId, route.InstId, mtypes.URNMatcher("([-a-zA-Z\\d]+)", route.ID(ctx).SEQ, mtypes.CN, route.NodeId, route.InstId))
+		rr := fmt.Sprintf("HeaderRegexp(`x-ptp-target-node-id`, `%s`) || HeaderRegexp(`x-ptp-target-inst-id`, `%s`) || HeaderRegexp(`mesh-urn`, `%s`)", route.NodeId, route.InstId, mtypes.URNMatcher("([-a-zA-Z\\d]+)", route.ID(ctx).SEQ, mtypes.CN, route.NodeId, route.InstId))
 		routes.Route(ctx, fmt.Sprintf("%s#secure", route.NodeId), &dynamic.Router{
 			EntryPoints: []string{TransportX, TransportY},
 			Middlewares: []string{PluginBarrier},
