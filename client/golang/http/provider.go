@@ -89,7 +89,6 @@ func (that *httpProvider) Start(ctx context.Context, address string, tc *tls.Con
 		}
 	}
 	that.Any(router, "/", that.Forward)
-	that.Any(router, "/mesh/invoke", that.Forward)
 	that.Back(router, that.Forbidden)
 	that.server = &http.Server{
 		Addr:    address,

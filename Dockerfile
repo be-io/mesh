@@ -7,16 +7,13 @@ ARG flags
 COPY . /src
 WORKDIR /src
 
-RUN go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,https://goproxy.cn,https://goproxy.io,https://proxy.golang.org,direct
+RUN go env -w GOPROXY=https://goproxy.cn,https://goproxy.io,https://proxy.golang.org,direct
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk add gcc g++ make git wget tzdata upx libpcap-dev openssh
 RUN --mount=type=cache,mode=0777,target=/root/.cache/go-build --mount=type=cache,mode=0777,target=/root/go/pkg go build -ldflags "-linkmode external -extldflags -static -s -w $flags" -o /bin/mesh
 RUN upx -9 /bin/mesh
 
 FROM alpine:3.18
-
-RUN addgroup -S app && adduser -S app -G app
-USER app
 
 MAINTAINER coyzeng@gmail.com
 

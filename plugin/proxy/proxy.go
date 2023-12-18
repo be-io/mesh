@@ -58,22 +58,22 @@ func init() {
 }
 
 const (
-	ProviderName      = "mesh"
-	TransportX        = "transport_x"
-	TransportY        = "transport_y"
-	TransportA        = "transport_a"
-	TransportB        = "transport_b"
-	TransportC        = "traefik"
-	TransportD        = "transport_d"
-	Letsencrypt       = "letsencrypt"
-	PluginRetry       = "retry"
-	PluginBarrier     = "barrier"
-	PluginHeader      = "header"
-	PluginAuthority   = "authority"
-	PluginErrors      = "errors"
-	PluginRewrite     = "rewrite"
-	PluginReplace     = "replace"
-	PluginHath        = "hath"
+	ProviderName    = "mesh"
+	TransportX      = "transport_x"
+	TransportY      = "transport_y"
+	TransportA      = "transport_a"
+	TransportB      = "transport_b"
+	TransportC      = "traefik"
+	TransportD      = "transport_d"
+	Letsencrypt     = "letsencrypt"
+	PluginRetry     = "retry"
+	PluginBarrier   = "barrier"
+	PluginHeader    = "header"
+	PluginAuthority = "authority"
+	PluginErrors    = "errors"
+	PluginRewrite   = "rewrite"
+	PluginReplace   = "replace"
+	PluginHath      = "hath"
 )
 
 var proxy = new(meshProxy)
@@ -148,6 +148,7 @@ func (that *meshProxy) Start(ctx context.Context, runtime plugin.Runtime) {
 			log.Info(ctx, "Mesh proxy dynamic routers refresh start with %s. ", taskId)
 		}
 	})
+	that.Register(ctx)
 }
 
 func (that *meshProxy) Stop(ctx context.Context, runtime plugin.Runtime) {
