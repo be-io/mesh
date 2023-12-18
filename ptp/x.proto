@@ -25,6 +25,7 @@ option java_package = "io.bfia.ptp";
 // x-ptp-tech-provider-code  required 厂商编码
 // x-ptp-trace-id            required 链路追踪ID
 // x-ptp-token               required 认证令牌
+// x-ptp-uri                 required 互联互通资源定位符，为跨节点实际请求的资源路径，用于兼容多协议
 // x-ptp-source-node-id      required 发送端节点编号
 // x-ptp-target-node-id      required 接收端节点编号
 // x-ptp-source-inst-id      required 发送端机构编号
