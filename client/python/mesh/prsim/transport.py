@@ -82,7 +82,7 @@ class Session(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    @mpi("mesh.chan.push")
+    @mpi("mesh.chan.push", timeout=120 * 1000)
     def push(self, payload: bytes, metadata: Dict[str, str], topic: str = ""):
         """
         Inserts the specified element into this queue if it is possible to do
