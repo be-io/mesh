@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "imesh"
-version = "0.0.25"
+version = "0.0.26"
 description = "A lightweight, distributed, relational network architecture for MPC."
 authors = ["coyzeng <coyzeng@gmail.com>"]
 maintainers = ["coyzeng <coyzeng@gmail.com>"]

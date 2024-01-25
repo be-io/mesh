@@ -70,7 +70,7 @@ class Session(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    @mpi(name="mesh.chan.pop", timeout=120 * 1000)
+    @mpi(name="mesh.chan.pop", timeout=120 * 1000 * 30)
     def pop(self, timeout: int, topic: str = "") -> bytes:
         """
         Retrieves and removes the head of this queue,
@@ -82,7 +82,7 @@ class Session(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    @mpi("mesh.chan.push", timeout=120 * 1000)
+    @mpi("mesh.chan.push", timeout=120 * 1000 * 30)
     def push(self, payload: bytes, metadata: Dict[str, str], topic: str = ""):
         """
         Inserts the specified element into this queue if it is possible to do

@@ -4,6 +4,7 @@
 #
 #
 import inspect
+import os
 from typing import Type, Any, Generic, Dict, List, Callable
 
 import mesh.kinds as kinds
@@ -337,6 +338,9 @@ class MeshEden(Eden, RuntimeHook, Subscriber):
                     break
                 except BaseException as e:
                     log.warn(f"Mesh service {kind.__name__} with {e.__str__()}")
+
+        if os.environ.get("MESH_REGISTER", "0") != "1":
+            return
 
         self.task_id = self.scheduler().period(30 * 1000, self.topic)
 

@@ -86,8 +86,8 @@ export class Metadata {
     public static MESH_CONSUMER = new Metadata("mesh-consumer");
     public static MESH_PROVIDER = new Metadata("mesh-provider");
     public static MESH_URN = new Metadata("mesh-urn");
-    public static MESH_FROM_INST_ID = new Metadata("mesh-from-inst-id");
-    public static MESH_FROM_NODE_ID = new Metadata("mesh-from-node-id");
+    public static MESH_FROM_INST_ID = new Metadata("mesh-source-inst-id");
+    public static MESH_FROM_NODE_ID = new Metadata("mesh-source-node-id");
     public static MESH_INCOMING_HOST = new Metadata("mesh-incoming-host");
     public static MESH_OUTGOING_HOST = new Metadata("mesh-outgoing-host");
     public static MESH_INCOMING_PROXY = new Metadata("mesh-incoming-proxy");
