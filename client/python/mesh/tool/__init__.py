@@ -81,6 +81,10 @@ def get_min_channels() -> int:
     return System.environ().get_min_channels()
 
 
+def get_packet_size() -> int:
+    return System.environ().get_packet_size()
+
+
 def required(*args: Any) -> bool:
     if not args:
         return False

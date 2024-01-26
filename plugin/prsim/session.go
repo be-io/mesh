@@ -31,13 +31,13 @@ type PRSISession struct {
 func (that *PRSISession) Peek(ctx context.Context, topic string) ([]byte, error) {
 	mtx := mpc.ContextWith(ctx)
 	chanId := fmt.Sprintf("%s.%s", prsim.MeshSessionId.Get(mtx.GetAttachments()), topic)
-	log.Info(ctx, "Session %s pop", chanId)
+	log.Info(ctx, "Session %s peek", chanId)
 	rc, err := redis.Ref(ctx)
 	if nil != err {
 		return nil, cause.Error(err)
 	}
 	rt, err := rc.LPop(ctx, chanId).Result()
-	if len(rt) < 2 || iset.IsNil(err) {
+	if "" == rt || iset.IsNil(err) {
 		return nil, nil
 	}
 	if nil != err {

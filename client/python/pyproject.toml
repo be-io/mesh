@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "imesh"
-version = "0.0.26"
+version = "0.0.28"
 description = "A lightweight, distributed, relational network architecture for MPC."
 authors = ["coyzeng <coyzeng@gmail.com>"]
 maintainers = ["coyzeng <coyzeng@gmail.com>"]
@@ -10,7 +10,7 @@ readme = "README.md"
 homepage = "https://github.com/be-io/mesh"
 repository = "https://github.com/be-io/mesh"
 documentation = "https://github.com/be-io/mesh"
-keywords = ["servicemesh", "rpc", "codec", "protocol", "cluster", "registry", "mesh"]
+keywords = ["servicemesh", "rpc", "cluster", "registry", "mesh"]
 classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "License :: OSI Approved :: MIT License",

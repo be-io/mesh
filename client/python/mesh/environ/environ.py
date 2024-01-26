@@ -115,6 +115,7 @@ class Environ:
     __mesh_subset_keys = ['mesh.subset', 'mesh_subset', 'mesh-subset', 'MESH_SUBSET']
     __mesh_min_channels = ['mesh.grpc.channel.min', 'mesh_grpc_channel_min', 'MESH_GRPC_CHANNEL_MIN']
     __mesh_max_channels = ['mesh.grpc.channel.max', 'mesh_grpc_channel_max', 'MESH_GRPC_CHANNEL_MAX']
+    __mesh_packet_size = ['mesh.packet.size', 'mesh_packet_size', 'MESH_PACKET_SIZE']
 
     @staticmethod
     def get_default_mesh_port() -> int:
@@ -140,6 +141,7 @@ class Environ:
         parser.add_argument("--mesh.direct", type=str, default='', required=False)
         parser.add_argument("--mesh.grpc.channel.min", type=int, default=20, required=False)
         parser.add_argument("--mesh.grpc.channel.max", type=int, default=200, required=False)
+        parser.add_argument("--mesh.packet.size", type=int, default=1 << 26, required=False)
         args, _ = parser.parse_known_args()
         return vars(args)
 
@@ -177,6 +179,10 @@ class Environ:
     @Cache
     def get_min_channels(self) -> int:
         return int(self.get_property(os.cpu_count() * 2, self.__mesh_min_channels))
+
+    @Cache
+    def get_packet_size(self) -> int:
+        return int(self.get_property(f"{1 << 26}", self.__mesh_packet_size))
 
     @Cache
     def get_hostname(self) -> str:

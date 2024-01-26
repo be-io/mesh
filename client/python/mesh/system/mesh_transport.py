@@ -3,7 +3,7 @@
 # TRUSTBE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
 #
 #
-
+import math
 from typing import Dict, Any, Callable
 
 import mesh.log as log
@@ -68,7 +68,7 @@ class MeshSession(Session):
         self.attachments = attachments
         self.address = address
         self.principal = principal
-        self.session = ServiceProxy.default_proxy(Session)
+        self.session = SplitSession(ServiceProxy.default_proxy(Session))
         self.finalizer = finalizer
 
     def with_context(self, fn: Any, remote: bool, timeout: int) -> Any:
@@ -125,3 +125,40 @@ class MeshSession(Session):
     def release(self, timeout: int, topic: str = ""):
         self.finalizer()
         return self.with_context(lambda: self.session.release(timeout, topic), False, timeout)
+
+
+class SplitSession(Session):
+
+    def __init__(self, session: Session):
+        self.session = session
+
+    def peek(self, topic: str = "") -> bytes:
+        buff = bytes()
+        packet_size = self.session.peek(self.split_key(topic, 0)).decode()
+        if "" == packet_size:
+            return buff
+        for idx in range(int(packet_size)):
+            buff += self.session.peek(self.split_key(topic, idx + 1))
+        return buff
+
+    def pop(self, timeout: int, topic: str = "") -> bytes:
+        packet_size = int(self.session.pop(timeout, self.split_key(topic, 0)).decode())
+        buff = bytes()
+        for idx in range(packet_size):
+            buff += self.session.pop(timeout, self.split_key(topic, idx + 1))
+        return buff
+
+    def push(self, payload: bytes, metadata: Dict[str, str], topic: str = ""):
+        packet_length = tool.get_packet_size()
+        packet_size = math.ceil(payload.__len__() / packet_length)
+        self.session.push(f"{packet_size}".encode(), metadata, self.split_key(topic, 0))
+        for idx in range(packet_size):
+            buff = payload[packet_length * idx:min(packet_length * (idx + 1), payload.__len__())]
+            self.session.push(buff, metadata, self.split_key(topic, idx + 1))
+
+    def release(self, timeout: int, topic: str = ""):
+        return self.session.release(timeout, topic)
+
+    @staticmethod
+    def split_key(topic: str, idx: int, ) -> str:
+        return f"{topic}-mesh-split-{idx}"
