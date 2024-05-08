@@ -207,6 +207,20 @@ func (that *SnapShot) withClusterRoute(ctx context.Context, routes *Routes) {
 		nvs[registration.Name] = append(nvs[registration.Name], registration)
 	}
 	for name, instances := range nvs {
+		if tool.Name.Get() == name {
+			that.withClusterSetRoute(ctx, routes, name, "fh2", instances, 4500, func(registration *mtypes.MetadataRegistration) string {
+				return mtypes.ParseURL(ctx, registration.Address).SetS(prsim.MeshSubset.Get(registration.Attachments)).SetSchema("h2c").URL().String()
+			}, func() string {
+				return "PathRegexp(`/org.ppc.ptp.PrivateTransferTransport/.*`)"
+			})
+			that.withClusterSetRoute(ctx, routes, name, "fh1", instances, 4100, func(registration *mtypes.MetadataRegistration) string {
+				h, p := assemblies.ParseHost(ctx, registration.Address)
+				uri := mtypes.ParseURL(ctx, registration.Address).SetS(prsim.MeshSubset.Get(registration.Attachments)).SetHost(fmt.Sprintf("%s:%d", h, p)).SetSchema("http").URL().String()
+				return uri
+			}, func() string {
+				return "PathRegexp(`/v1/interconn/chan/(pop|push|peek|release)`)"
+			})
+		}
 		that.withClusterSetRoute(ctx, routes, name, "h2", instances, 1000, func(registration *mtypes.MetadataRegistration) string {
 			return mtypes.ParseURL(ctx, registration.Address).SetS(prsim.MeshSubset.Get(registration.Attachments)).SetSchema("h2c").URL().String()
 		}, func() string {
