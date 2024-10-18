@@ -9,6 +9,8 @@ Private Transmission Protocol -- PTP/1.0 [README](specifications/api/Specificati
 
 中文版 [README](README_CN.md)
 
+高可用 [HA](HA.md)
+
 ## Introduction
 
 Mesh is an MPC network solution to serve resource as service.
