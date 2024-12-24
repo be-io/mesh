@@ -9,6 +9,8 @@ package prsim
 
 import (
 	"context"
+	"crypto/x509"
+	"encoding/pem"
 	"fmt"
 	"github.com/be-io/mesh/client/golang/cause"
 	"github.com/be-io/mesh/client/golang/codec"
@@ -103,6 +105,18 @@ func (that *PRSINetwork) Refresh(ctx context.Context, routes []*types.Route) err
 	text, _ := aware.Codec.EncodeString(routes)
 	log.Info(ctx, "Network refresh event=%s", text)
 	for _, route := range routes {
+		if "" != route.HostCrt {
+			b, _ := pem.Decode([]byte(route.HostCrt))
+			if _, err = x509.ParseCertificate(b.Bytes); nil != err {
+				return cause.Error(err)
+			}
+		}
+		if "" != route.GuestCrt {
+			b, _ := pem.Decode([]byte(route.GuestCrt))
+			if _, err = x509.ParseCertificate(b.Bytes); nil != err {
+				return cause.Error(err)
+			}
+		}
 		isLocal := tool.IsLocalEnv(environ, route.NodeId, route.InstId)
 		if myEnv, err := myEnvFn(route); nil == err {
 			route.Status = tool.Ternary(isLocal, types.Virtual.Not(route.Status|int32(types.Connected)|int32(types.Weaved)), route.Status|int32(types.Connected))

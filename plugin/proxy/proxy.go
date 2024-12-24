@@ -96,6 +96,7 @@ type meshProxy struct {
 	AccessSize           int                    `json:"plugin.proxy.access.size" dft:"100" usage:"Max archive files size in megabytes"`
 	AccessAge            int                    `json:"plugin.proxy.access.age" dft:"28" usage:"Max archive files age in days"`
 	Compress             bool                   `json:"plugin.proxy.access.compress" dft:"false" comment:"Compress the accesslog"`
+	InsecureSkip         bool                   `json:"plugin.proxy.insecure.skip" dft:"false" comment:"Insecure skip verify"`
 	Server               *server.Server         `json:"-"`
 	TCPRouters           map[string]*tcp.Router `json:"-"`
 	UDPRouters           map[string]udp.Handler `json:"-"`

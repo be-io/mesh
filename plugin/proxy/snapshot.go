@@ -401,7 +401,7 @@ func (that *SnapShot) withTransports(ctx context.Context) map[string]*dynamic.Se
 		}
 		transports[route.NodeId] = &dynamic.ServersTransport{
 			ServerName:         fmt.Sprintf("%s.%s.%s", that.env.NodeId, route.NodeId, mtypes.MeshDomain),
-			InsecureSkipVerify: true,
+			InsecureSkipVerify: proxy.InsecureSkip,
 			RootCAs:            roots,
 			Certificates: tls.Certificates{
 				{
