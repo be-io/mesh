@@ -9,7 +9,7 @@ package log
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"io"
 	gog "log"
 	"runtime/debug"

@@ -9,8 +9,8 @@ package redis
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/log"
 	"github.com/redis/go-redis/v9"
 	"strings"
 )

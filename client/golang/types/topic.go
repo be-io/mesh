@@ -7,7 +7,7 @@
 
 package types
 
-import "github.com/be-io/mesh/client/golang/macro"
+import "github.com/opendatav/mesh/client/golang/macro"
 
 type Topic struct {
 

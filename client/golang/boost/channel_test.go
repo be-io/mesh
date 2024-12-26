@@ -9,7 +9,7 @@ package boost
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/mpc"
+	"github.com/opendatav/mesh/client/golang/mpc"
 	"math/rand"
 	"net"
 	"net/http"

@@ -9,7 +9,7 @@ package grpc
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"

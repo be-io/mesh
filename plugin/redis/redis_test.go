@@ -8,7 +8,7 @@
 package redis
 
 import (
-	"github.com/be-io/mesh/client/golang/mpc"
+	"github.com/opendatav/mesh/client/golang/mpc"
 	"net/url"
 	"testing"
 )

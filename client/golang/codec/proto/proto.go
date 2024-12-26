@@ -9,7 +9,7 @@ package proto
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"google.golang.org/protobuf/proto"
 	"math/bits"
 	"reflect"

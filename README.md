@@ -143,7 +143,7 @@ Use "Mesh [command] --help" for more information about a command.
 Golang
 
 ```bash
-go get github.com/be-io/mesh/client/golang
+go get github.com/opendatav/mesh/client/golang
 ```
 
 Java

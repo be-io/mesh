@@ -10,7 +10,7 @@ package prsim
 import (
 	"bytes"
 	"context"
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/types"
 )
 
 var IPublisher = (*Publisher)(nil)

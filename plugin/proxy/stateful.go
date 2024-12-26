@@ -8,11 +8,11 @@
 package proxy
 
 import (
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/system"
-	"github.com/be-io/mesh/client/golang/tool"
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/system"
+	"github.com/opendatav/mesh/client/golang/tool"
+	"github.com/opendatav/mesh/client/golang/types"
 	"github.com/traefik/traefik/v3/pkg/server/service/loadbalancer/wrr"
 	"net/http"
 	"strings"

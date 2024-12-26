@@ -9,13 +9,13 @@ package node
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/plugin"
+	"github.com/opendatav/mesh/client/golang/plugin"
 	// --
-	_ "github.com/be-io/mesh/plugin/metabase"
-	_ "github.com/be-io/mesh/plugin/proxy"
-	_ "github.com/be-io/mesh/plugin/prsim"
-	_ "github.com/be-io/mesh/plugin/redis"
-	_ "github.com/be-io/mesh/plugin/serve"
+	_ "github.com/opendatav/mesh/plugin/metabase"
+	_ "github.com/opendatav/mesh/plugin/proxy"
+	_ "github.com/opendatav/mesh/plugin/prsim"
+	_ "github.com/opendatav/mesh/plugin/redis"
+	_ "github.com/opendatav/mesh/plugin/serve"
 )
 
 func init() {

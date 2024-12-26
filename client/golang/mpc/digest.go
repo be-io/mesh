@@ -8,8 +8,8 @@
 package mpc
 
 import (
-	"github.com/be-io/mesh/client/golang/log"
-	"github.com/be-io/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/prsim"
 	"strconv"
 	"time"
 )

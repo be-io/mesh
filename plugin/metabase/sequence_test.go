@@ -9,8 +9,8 @@ package metabase
 
 import (
 	"fmt"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/plugin"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/plugin"
 	"testing"
 )
 

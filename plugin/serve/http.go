@@ -9,9 +9,9 @@ package serve
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/boost"
-	"github.com/be-io/mesh/client/golang/log"
-	"github.com/be-io/mesh/client/golang/plugin"
+	"github.com/opendatav/mesh/client/golang/boost"
+	"github.com/opendatav/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/plugin"
 )
 
 func init() {

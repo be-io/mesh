@@ -8,7 +8,7 @@
 package prsim
 
 import (
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/types"
 	"golang.org/x/net/context"
 )
 

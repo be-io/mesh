@@ -9,7 +9,7 @@ package prsim
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/types"
 )
 
 var IDevops = (*Devops)(nil)

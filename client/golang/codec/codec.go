@@ -9,8 +9,8 @@ package codec
 
 import (
 	"bytes"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/macro"
 )
 
 var ICodec = (*Codec)(nil)

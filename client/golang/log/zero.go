@@ -11,7 +11,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/macro"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/natefinch/lumberjack.v2"

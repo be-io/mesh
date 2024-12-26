@@ -10,7 +10,7 @@ package proxy
 import (
 	"context"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/prsim"
 	"github.com/traefik/traefik/v3/pkg/server/middleware"
 	"net/http"
 )

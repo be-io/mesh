@@ -9,10 +9,10 @@ package panel
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/plugin"
+	"github.com/opendatav/mesh/client/golang/plugin"
 	// --
-	_ "github.com/be-io/mesh/plugin/panel"
-	_ "github.com/be-io/mesh/plugin/serve"
+	_ "github.com/opendatav/mesh/plugin/panel"
+	_ "github.com/opendatav/mesh/plugin/serve"
 )
 
 func init() {

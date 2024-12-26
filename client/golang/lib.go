@@ -7,4 +7,4 @@
 
 package golang
 
-//go:generate go run dyn/mpc.go -m github.com/be-io/mesh/client/golang
+//go:generate go run dyn/mpc.go -m github.com/opendatav/mesh/client/golang

@@ -9,7 +9,7 @@ package proxy
 
 import (
 	"fmt"
-	mtypes "github.com/be-io/mesh/client/golang/types"
+	mtypes "github.com/opendatav/mesh/client/golang/types"
 	ptypes "github.com/traefik/paerser/types"
 	"github.com/traefik/traefik/v3/pkg/config/static"
 	"github.com/traefik/traefik/v3/pkg/ping"

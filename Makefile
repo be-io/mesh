@@ -26,7 +26,7 @@ setenv:
 	$(call set,Stage,$(Branch),release,release)
 	$(call set,Stage,$(Branch),master,dev)
 	$(eval ImageID:=bfia/mesh:$(Version)-$(CommitID))
-	$(eval Flags:="-X github.com/be-io/mesh/client/golang/prsim.Version=$(MinaVersion) -X github.com/be-io/mesh/client/golang/prsim.CommitID=$(CommitID)")
+	$(eval Flags:="-X github.com/opendatav/mesh/client/golang/prsim.Version=$(MinaVersion) -X github.com/opendatav/mesh/client/golang/prsim.CommitID=$(CommitID)")
 
 .PHONY: image
 image:setenv

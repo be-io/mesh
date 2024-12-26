@@ -13,9 +13,9 @@ import (
 	"embed"
 	"flag"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/log"
-	ark "github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/tool"
+	"github.com/opendatav/mesh/client/golang/log"
+	ark "github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/tool"
 	"go/ast"
 	"go/build"
 	"go/format"
@@ -36,8 +36,8 @@ var home embed.FS
 
 func main() {
 	var include, exclude, module, super, macro, mpx, dist string
-	flag.StringVar(&mpx, "p", "github.com/be-io/mesh/client/golang/proxy", "Go mesh program interface proxy path.")
-	flag.StringVar(&macro, "r", "github.com/be-io/mesh/client/golang/macro", "Go macro path.")
+	flag.StringVar(&mpx, "p", "github.com/opendatav/mesh/client/golang/proxy", "Go mesh program interface proxy path.")
+	flag.StringVar(&macro, "r", "github.com/opendatav/mesh/client/golang/macro", "Go macro path.")
 	flag.StringVar(&super, "s", "", "Go mesh program interface proxy path.")
 	flag.StringVar(&module, "m", "", "Go module of the proxied path.")
 	flag.StringVar(&include, "i", "", "Include bundle, if appointed will proxy the bundle only.")

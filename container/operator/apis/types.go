@@ -7,4 +7,4 @@
 
 package apis
 
-import _ "github.com/be-io/mesh/client/golang"
+import _ "github.com/opendatav/mesh/client/golang"

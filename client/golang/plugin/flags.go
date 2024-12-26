@@ -9,9 +9,9 @@ package plugin
 
 import (
 	"fmt"
-	"github.com/be-io/mesh/client/golang/codec"
-	"github.com/be-io/mesh/client/golang/schema"
-	"github.com/be-io/mesh/client/golang/tool"
+	"github.com/opendatav/mesh/client/golang/codec"
+	"github.com/opendatav/mesh/client/golang/schema"
+	"github.com/opendatav/mesh/client/golang/tool"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"net/http"

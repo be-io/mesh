@@ -9,7 +9,7 @@ package types
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/macro"
 )
 
 var _ macro.Returns = new(Outbound)

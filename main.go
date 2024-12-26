@@ -8,12 +8,12 @@
 package main
 
 import (
-	"github.com/be-io/mesh/client/golang/mpc"
-	"github.com/be-io/mesh/client/golang/plugin"
-	_ "github.com/be-io/mesh/cmd"
+	"github.com/opendatav/mesh/client/golang/mpc"
+	"github.com/opendatav/mesh/client/golang/plugin"
+	_ "github.com/opendatav/mesh/cmd"
 )
 
-//go:generate go run client/golang/dyn/mpc.go -i plugin -e plugin/raft -m github.com/be-io/mesh
+//go:generate go run client/golang/dyn/mpc.go -i plugin -e plugin/raft -m github.com/opendatav/mesh
 
 func main() {
 	container := plugin.LoadC("mesh")

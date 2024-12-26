@@ -8,14 +8,14 @@
 package test
 
 import (
-	"github.com/be-io/mesh/client/golang/codec"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/codec"
+	"github.com/opendatav/mesh/client/golang/macro"
 	"testing"
 )
 
 //go:generate go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28.0
 //go:generate go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2.0
-//go:generate go run ../proto/generate.go -m github.com/be-io/mesh/client/golang/test -j ../../java/src/test/java
+//go:generate go run ../proto/generate.go -m github.com/opendatav/mesh/client/golang/test -j ../../java/src/test/java
 
 type PureBody struct {
 	A float64              `index:"1" json:"a,omitempty"`

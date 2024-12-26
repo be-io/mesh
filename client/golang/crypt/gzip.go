@@ -10,8 +10,8 @@ package crypt
 import (
 	"bytes"
 	"compress/gzip"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/log"
 	"io/ioutil"
 )
 

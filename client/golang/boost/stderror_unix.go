@@ -1,4 +1,4 @@
-//go:build arm64
+//go:build unix
 
 /*
  * Copyright (c) 2000, 2023, trustbe and/or its affiliates. All rights reserved.
@@ -11,11 +11,11 @@ package boost
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/log"
+	"golang.org/x/sys/unix"
 	"os"
 	"path/filepath"
 	"runtime"
-	"syscall"
 )
 
 var stderrFd *os.File
@@ -34,7 +34,7 @@ func RedirectStderrFile(ctx context.Context, stderr string) {
 	}
 	stderrFd = file
 	// save global avoid gc recover
-	if err = syscall.Dup3(int(stderrFd.Fd()), int(os.Stderr.Fd()), 0); nil != err {
+	if err = unix.Dup2(int(stderrFd.Fd()), int(os.Stderr.Fd())); nil != err {
 		log.Error(ctx, "Redirect stderr with error, %s", err.Error())
 		return
 	}

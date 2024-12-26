@@ -10,7 +10,7 @@ package proto
 import (
 	"context"
 	"encoding/binary"
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"io"
 	"reflect"
 	"unsafe"

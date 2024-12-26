@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package types;
 
-option go_package = "github.com/be-io/mesh/client/golang/test";
+option go_package = "github.com/opendatav/mesh/client/golang/test";
 option java_package = "com.be.mesh.client.codec";
 
 message Body {

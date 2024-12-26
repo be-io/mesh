@@ -8,11 +8,11 @@
 package http
 
 import (
-	"github.com/be-io/mesh/client/golang/codec"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/mpc"
-	_ "github.com/be-io/mesh/client/golang/proxy"
-	"github.com/be-io/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/codec"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/mpc"
+	_ "github.com/opendatav/mesh/client/golang/proxy"
+	"github.com/opendatav/mesh/client/golang/prsim"
 )
 
 func init() {

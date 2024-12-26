@@ -8,7 +8,7 @@
 package mpc
 
 import (
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/macro"
 )
 
 type Generic interface {

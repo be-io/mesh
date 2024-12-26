@@ -9,10 +9,10 @@ package proxy
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/log"
-	"github.com/be-io/mesh/client/golang/plugin"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/plugin"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/types"
 	"time"
 )
 

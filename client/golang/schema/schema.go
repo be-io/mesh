@@ -9,7 +9,7 @@ package schema
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"go/ast"
 	"go/build"
 	"go/parser"

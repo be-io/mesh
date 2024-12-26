@@ -11,9 +11,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/codec"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/codec"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/types"
 	"go/build"
 	"io"
 	"net/http"
@@ -420,7 +420,7 @@ func TestRegex(t *testing.T) {
 }
 
 func TestImport(t *testing.T) {
-	pkg, err := build.Import("github.com/be-io/mesh/client/golang/prsim", "", build.ImportComment)
+	pkg, err := build.Import("github.com/opendatav/mesh/client/golang/prsim", "", build.ImportComment)
 	if nil != err {
 		t.Error(err)
 		return

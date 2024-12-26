@@ -1,11 +1,9 @@
-module github.com/be-io/mesh
+module github.com/opendatav/mesh
 
 go 1.20
 
 replace (
 	github.com/abbot/go-http-auth => github.com/containous/go-http-auth v0.4.1-0.20200324110947-a37a7636d23e
-	github.com/be-io/mesh/client/golang v0.0.0 => ./client/golang
-	github.com/be-io/mesh/container/operator v0.0.0 => ./container/operator
 	github.com/cockroachdb/pebble v0.0.0 => github.com/cockroachdb/pebble v0.0.0-20221207173255-0f086d933dac
 	github.com/cpu/goacmedns v0.1.1 => github.com/ducesoft/goacmedns v0.1.2-0.20220816173558-b8df2a1e2ba5
 	github.com/go-check/check => github.com/containous/check v0.0.0-20170915194414-ca0bf163426a
@@ -15,6 +13,8 @@ replace (
 	github.com/mailgun/minheap => github.com/containous/minheap v0.0.0-20190809180810-6e71eb837595
 	github.com/mailgun/multibuf => github.com/containous/multibuf v0.0.0-20190809014333-8b6c9a7e6bba
 	github.com/nsqio/nsq v1.2.1 => github.com/ducesoft/nsq v1.2.3
+	github.com/opendatav/mesh/client/golang v0.0.0 => ./client/golang
+	github.com/opendatav/mesh/container/operator v0.0.0 => ./container/operator
 	github.com/timshannon/badgerhold/v4 v4.0.0 => github.com/ducesoft/badgerhold/v4 v4.0.0-20230312123627-250c739c70df
 	github.com/traefik/traefik/v3 v3.0.0 => github.com/ducesoft/traefik/v3 v3.0.0-20230529045610-16c66ac69928
 	github.com/vulcand/oxy/v2 v2.0.0 => github.com/ducesoft/oxy/v2 v2.0.0-20221222033727-1be0c32e5e77
@@ -24,8 +24,6 @@ exclude github.com/tencentcloud/tencentcloud-sdk-go v3.0.83+incompatible
 
 require (
 	github.com/alicebob/miniredis/v2 v2.30.2
-	github.com/be-io/mesh/client/golang v0.0.0
-	github.com/be-io/mesh/container/operator v0.0.0
 	github.com/buraksezer/olric v0.5.4
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/dgraph-io/badger/v4 v4.1.0
@@ -44,6 +42,8 @@ require (
 	github.com/nsqio/go-nsq v1.1.0
 	github.com/nsqio/nsq v1.2.1
 	github.com/olebedev/gojax v0.0.0-20170318114811-bb153be84336
+	github.com/opendatav/mesh/client/golang v0.0.0
+	github.com/opendatav/mesh/container/operator v0.0.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pelletier/go-toml/v2 v2.0.9
 	github.com/pterm/pterm v0.12.62

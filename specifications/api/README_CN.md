@@ -40,7 +40,7 @@ Mesh支持多种方式运行(支持ARM/AMD架构)
 2. 作为容器运行在各类PaaS及云平台
 3. 作为应用运行在各类裸机环境（Windows、Linux、Darwin）
 
-![logo](https://github.com/be-io/mesh/blob/master/specifications/api/pipline.png?raw=true)
+![logo](https://github.com/opendatav/mesh/blob/master/specifications/api/pipline.png?raw=true)
 
 ## 内容
 
@@ -179,7 +179,7 @@ kubectl apply -f mesh.yaml -n namespace
 使用裸系统部署Mesh命令如下，该命令会启动容器，并映射7304端口提供服务。
 
 ```shell
-curl -Ol https://github.com/be-io/mesh/releases/download/v0.0.1/mesh-0.0.1-linux-amd64.tar.gz
+curl -Ol https://github.com/opendatav/mesh/releases/download/v0.0.1/mesh-0.0.1-linux-amd64.tar.gz
 tar -zxvf mesh-0.0.1-linux-amd64.tar.gz
 cd mesh-0.0.1
 mesh start --server
@@ -193,7 +193,7 @@ Mesh提供多语言SDK进行快速开发集成，SDK需要配置一个环境变�
 Go SDK提供Golang语言通信SPI集成包，实现Go语言节点间跨域通信管控和传输。
 
 ```bash
-go get github.com/be-io/mesh/client/golang
+go get github.com/opendatav/mesh/client/golang
 ```
 
 Java SDK提供Golang语言通信SPI集成包，实现Java语言节点间跨域通信管控和传输。
@@ -472,6 +472,6 @@ curl --location 'http://10.99.27.33:7304/v1/interconn/registry/register' --heade
 
 ### <a id="5">5 附录</a>
 
-更多高级能力详见： [Mesh高级能力](https://github.com/be-io/mesh/tree/master/client/golang/prsim)
+更多高级能力详见： [Mesh高级能力](https://github.com/opendatav/mesh/tree/master/client/golang/prsim)
 
-更多使用案例详见：[Mesh使用案例](https://github.com/be-io/mesh/tree/master/examples)
+更多使用案例详见：[Mesh使用案例](https://github.com/opendatav/mesh/tree/master/examples)

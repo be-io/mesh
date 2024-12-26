@@ -10,8 +10,8 @@ package tool
 import (
 	"bytes"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/log"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/macro"
 	"net"
 	"os"
 	"strconv"

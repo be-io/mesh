@@ -10,12 +10,12 @@ package metabase
 import (
 	"context"
 	"database/sql"
-	"github.com/be-io/mesh/client/golang/boost"
-	"github.com/be-io/mesh/plugin/metabase/dal"
 	_ "github.com/dolthub/go-mysql-server"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/kyleconroy/sqlc"
 	_ "github.com/lib/pq"
+	"github.com/opendatav/mesh/client/golang/boost"
+	"github.com/opendatav/mesh/plugin/metabase/dal"
 	"strings"
 )
 

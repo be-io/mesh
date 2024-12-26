@@ -9,8 +9,8 @@ package prsim
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/types"
 )
 
 var _ prsim.Transport = new(PRSITransport)

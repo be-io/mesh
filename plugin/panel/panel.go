@@ -10,10 +10,10 @@ package panel
 import (
 	"context"
 	"embed"
-	"github.com/be-io/mesh/client/golang/cause"
-	httpx "github.com/be-io/mesh/client/golang/http"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/plugin"
+	"github.com/opendatav/mesh/client/golang/cause"
+	httpx "github.com/opendatav/mesh/client/golang/http"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/plugin"
 	"net/http"
 	"os"
 )

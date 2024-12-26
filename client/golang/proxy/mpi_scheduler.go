@@ -13,11 +13,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/mpc"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/mpc"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/types"
 )
 
 func init() {

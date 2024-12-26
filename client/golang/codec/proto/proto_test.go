@@ -10,7 +10,7 @@ package proto
 import (
 	"encoding/binary"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/macro"
 	"io/ioutil"
 	"math"
 	"reflect"

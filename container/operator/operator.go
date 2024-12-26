@@ -9,7 +9,7 @@ package operator
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/plugin"
+	"github.com/opendatav/mesh/client/golang/plugin"
 )
 
 func init() {

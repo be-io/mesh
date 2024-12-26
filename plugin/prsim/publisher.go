@@ -9,10 +9,10 @@ package prsim
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/types"
-	_ "github.com/be-io/mesh/plugin/nsq"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/types"
+	_ "github.com/opendatav/mesh/plugin/nsq"
 	"regexp"
 )
 

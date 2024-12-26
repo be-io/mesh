@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net"
 	"time"
-	"github.com/be-io/mesh/client/golang/pool"
+	"github.com/opendatav/mesh/client/golang/pool"
 )
 
 func main() {

@@ -10,10 +10,10 @@ package prsim
 import (
 	"context"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/types"
-	_ "github.com/be-io/mesh/plugin/metabase"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/types"
+	_ "github.com/opendatav/mesh/plugin/metabase"
 	"time"
 )
 

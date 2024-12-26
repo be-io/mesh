@@ -17,9 +17,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='x.proto',
   package='org.ppc.ptp',
   syntax='proto3',
-  serialized_options=b'\n\013io.bfia.ptpZ\031github.com/be-io/mesh/ptp',
+  serialized_options=b'\n\013io.bfia.ptpZ\031github.com/opendatav/mesh/ptp',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x07x.proto\x12\x0borg.ppc.ptp\"\x81\x01\n\x07Inbound\x12\x34\n\x08metadata\x18\x01 \x03(\x0b\x32\".org.ppc.ptp.Inbound.MetadataEntry\x12\x0f\n\x07payload\x18\x02 \x01(\x0c\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xa2\x01\n\x08Outbound\x12\x35\n\x08metadata\x18\x01 \x03(\x0b\x32#.org.ppc.ptp.Outbound.MetadataEntry\x12\x0f\n\x07payload\x18\x02 \x01(\x0c\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0f\n\x07message\x18\x04 \x01(\t\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\x8e\x01\n\x17PrivateTransferProtocol\x12<\n\ttransport\x12\x14.org.ppc.ptp.Inbound\x1a\x15.org.ppc.ptp.Outbound(\x01\x30\x01\x12\x35\n\x06invoke\x12\x14.org.ppc.ptp.Inbound\x1a\x15.org.ppc.ptp.OutboundB(\n\x0bio.bfia.ptpZ\x19github.com/be-io/mesh/ptpb\x06proto3'
+  serialized_pb=b'\n\x07x.proto\x12\x0borg.ppc.ptp\"\x81\x01\n\x07Inbound\x12\x34\n\x08metadata\x18\x01 \x03(\x0b\x32\".org.ppc.ptp.Inbound.MetadataEntry\x12\x0f\n\x07payload\x18\x02 \x01(\x0c\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xa2\x01\n\x08Outbound\x12\x35\n\x08metadata\x18\x01 \x03(\x0b\x32#.org.ppc.ptp.Outbound.MetadataEntry\x12\x0f\n\x07payload\x18\x02 \x01(\x0c\x12\x0c\n\x04\x63ode\x18\x03 \x01(\t\x12\x0f\n\x07message\x18\x04 \x01(\t\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x32\x8e\x01\n\x17PrivateTransferProtocol\x12<\n\ttransport\x12\x14.org.ppc.ptp.Inbound\x1a\x15.org.ppc.ptp.Outbound(\x01\x30\x01\x12\x35\n\x06invoke\x12\x14.org.ppc.ptp.Inbound\x1a\x15.org.ppc.ptp.OutboundB(\n\x0bio.bfia.ptpZ\x19github.com/opendatav/mesh/ptpb\x06proto3'
 )
 
 

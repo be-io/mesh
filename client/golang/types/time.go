@@ -9,7 +9,7 @@ package types
 
 import (
 	"encoding/json"
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"strconv"
 	"time"
 )

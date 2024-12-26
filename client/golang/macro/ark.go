@@ -9,7 +9,7 @@ package macro
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/dsa"
+	"github.com/opendatav/mesh/client/golang/dsa"
 	"reflect"
 	"strings"
 )

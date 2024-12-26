@@ -13,15 +13,15 @@ import (
 	"context"
 	"strings"
 
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/mpc"
-	proxympx "github.com/be-io/mesh/client/golang/proxy"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/tool"
-	"github.com/be-io/mesh/client/golang/types"
-	_ "github.com/be-io/mesh/plugin/kms"
-	prsimmps "github.com/be-io/mesh/plugin/prsim"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/mpc"
+	proxympx "github.com/opendatav/mesh/client/golang/proxy"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/tool"
+	"github.com/opendatav/mesh/client/golang/types"
+	_ "github.com/opendatav/mesh/plugin/kms"
+	prsimmps "github.com/opendatav/mesh/plugin/prsim"
 )
 
 func init() {

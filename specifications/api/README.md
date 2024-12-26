@@ -428,7 +428,7 @@ class Session(ABC, Generic[T]):
 
 ### <a id="4.1">4.1 通信模块</a>
 
-通信模块提供节点间跨域通信管控和传输，[项目地址](https://github.com/be-io/mesh)
+通信模块提供节点间跨域通信管控和传输，[项目地址](https://github.com/opendatav/mesh)
 
 ```bash
 docker pull bfia/mesh
@@ -440,7 +440,7 @@ docker run -d -p 7304:7304 bfia/mesh
 Go SDK提供Golang语言通信SPI集成包，实现Go语言节点间跨域通信管控和传输。
 
 ```bash
-go get github.com/be-io/mesh/client/golang
+go get github.com/opendatav/mesh/client/golang
 ```
 
 ### <a id="4.3">4.3 Java SDK</a>

@@ -10,7 +10,7 @@ package crypt
 import (
 	"bytes"
 	"encoding/base64"
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"io/ioutil"
 )
 

@@ -7,7 +7,7 @@
 
 package prsim
 
-import "github.com/be-io/mesh/client/golang/types"
+import "github.com/opendatav/mesh/client/golang/types"
 
 type Routable interface {
 

@@ -9,8 +9,8 @@ package types
 
 import (
 	"fmt"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/codec"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/codec"
 	"reflect"
 )
 

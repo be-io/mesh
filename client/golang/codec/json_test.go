@@ -11,7 +11,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/macro"
 	"testing"
 	"time"
 )

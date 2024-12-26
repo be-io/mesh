@@ -9,10 +9,10 @@ package prsim
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/types"
-	_ "github.com/be-io/mesh/plugin/cache"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/types"
+	_ "github.com/opendatav/mesh/plugin/cache"
 )
 
 var _ prsim.Cache = new(PRSICache)

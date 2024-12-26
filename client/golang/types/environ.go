@@ -8,7 +8,7 @@
 package types
 
 import (
-	"github.com/be-io/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/log"
 	"golang.org/x/net/context"
 )
 

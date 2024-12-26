@@ -7,7 +7,7 @@
 
 package types
 
-import "github.com/be-io/mesh/client/golang/cause"
+import "github.com/opendatav/mesh/client/golang/cause"
 
 type Response struct {
 	Code    string      `index:"0" json:"code,omitempty" yaml:"code,omitempty" xml:"code,omitempty"`

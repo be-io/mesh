@@ -7,9 +7,9 @@ maintainers = ["coyzeng <coyzeng@gmail.com>"]
 packages = [{ include = "mesh" }]
 license = "LICENSE"
 readme = "README.md"
-homepage = "https://github.com/be-io/mesh"
-repository = "https://github.com/be-io/mesh"
-documentation = "https://github.com/be-io/mesh"
+homepage = "https://github.com/opendatav/mesh"
+repository = "https://github.com/opendatav/mesh"
+documentation = "https://github.com/opendatav/mesh"
 keywords = ["servicemesh", "rpc", "cluster", "registry", "mesh"]
 classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",

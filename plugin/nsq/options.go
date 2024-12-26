@@ -9,8 +9,8 @@ package nsqio
 
 import (
 	"crypto/tls"
-	"github.com/be-io/mesh/client/golang/cause"
 	"github.com/nsqio/nsq/nsqd"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"strconv"
 	"strings"
 	"time"

@@ -9,9 +9,9 @@ package grpc
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/mpc"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/tool"
+	"github.com/opendatav/mesh/client/golang/mpc"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/tool"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )

@@ -9,8 +9,8 @@ package system
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/prsim"
 )
 
 func init() {

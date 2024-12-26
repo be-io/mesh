@@ -11,7 +11,7 @@
 Mesh Golang client develop kits base on Golang1.18.
 
 ```bash
-go get github.com/be-io/mesh/client/golang
+go get github.com/opendatav/mesh/client/golang
 ```
 
 ## Features
@@ -38,12 +38,12 @@ import (
 	_ "gitlab.trustbe.net/middleware/gaia-ark/internal/kms"
 	_ "gitlab.trustbe.net/middleware/gaia-ark/panel"
 	_ "gitlab.trustbe.net/middleware/gaia-ark/proxy"
-	"github.com/be-io/mesh/client/golang/boost"
-	_ "github.com/be-io/mesh/client/golang/grpc"
-	"github.com/be-io/mesh/client/golang/log"
-	_ "github.com/be-io/mesh/client/golang/proxy"
-	"github.com/be-io/mesh/client/golang/prsim"
-	_ "github.com/be-io/mesh/client/golang/system"
+	"github.com/opendatav/mesh/client/golang/boost"
+	_ "github.com/opendatav/mesh/client/golang/grpc"
+	"github.com/opendatav/mesh/client/golang/log"
+	_ "github.com/opendatav/mesh/client/golang/proxy"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	_ "github.com/opendatav/mesh/client/golang/system"
 	"os"
 )
 

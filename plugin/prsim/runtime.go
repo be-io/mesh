@@ -8,16 +8,16 @@
 package prsim
 
 import (
-	"github.com/be-io/mesh/client/golang/codec"
-	"github.com/be-io/mesh/client/golang/macro"
-	_ "github.com/be-io/mesh/client/golang/proxy"
-	"github.com/be-io/mesh/client/golang/prsim"
-	_ "github.com/be-io/mesh/client/golang/system"
-	"github.com/be-io/mesh/plugin/cache"
-	"github.com/be-io/mesh/plugin/kms"
-	"github.com/be-io/mesh/plugin/metabase"
-	nsqio "github.com/be-io/mesh/plugin/nsq"
-	"github.com/be-io/mesh/plugin/redis"
+	"github.com/opendatav/mesh/client/golang/codec"
+	"github.com/opendatav/mesh/client/golang/macro"
+	_ "github.com/opendatav/mesh/client/golang/proxy"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	_ "github.com/opendatav/mesh/client/golang/system"
+	"github.com/opendatav/mesh/plugin/cache"
+	"github.com/opendatav/mesh/plugin/kms"
+	"github.com/opendatav/mesh/plugin/metabase"
+	nsqio "github.com/opendatav/mesh/plugin/nsq"
+	"github.com/opendatav/mesh/plugin/redis"
 )
 
 func init() {

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Mesh: A lightweight, distributed, relational network architecture for MPC",
   "homepage": "mesh",
-  "repository": "github.com/be-io/mesh",
+  "repository": "github.com/opendatav/mesh",
   "author": "coyzeng@gmail.com",
   "maintainers": [
     "coyzeng@gmail.com"

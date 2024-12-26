@@ -9,7 +9,7 @@ package mpc
 
 import (
 	"encoding/json"
-	"github.com/be-io/mesh/client/golang/codec"
+	"github.com/opendatav/mesh/client/golang/codec"
 	"testing"
 )
 

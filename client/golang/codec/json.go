@@ -9,9 +9,9 @@ package codec
 
 import (
 	"bytes"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/macro"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/macro"
 )
 
 func init() {

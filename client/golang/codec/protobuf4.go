@@ -3,9 +3,9 @@ package codec
 import (
 	"bytes"
 	"context"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/codec/proto4"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/codec/proto4"
+	"github.com/opendatav/mesh/client/golang/macro"
 	"google.golang.org/protobuf/proto"
 	"reflect"
 )
@@ -18,7 +18,7 @@ const PROTOBUF4 = "protobuf4"
 
 //go:generate go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28.0
 //go:generate go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2.0
-//go:generate go run ../proto/generate.go -m github.com/be-io/mesh/client/golang/codec/proto4
+//go:generate go run ../proto/generate.go -m github.com/opendatav/mesh/client/golang/codec/proto4
 type Protobuf4 struct {
 }
 

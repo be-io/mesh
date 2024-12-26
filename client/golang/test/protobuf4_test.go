@@ -3,10 +3,10 @@ package test
 import (
 	"errors"
 	"fmt"
-	"github.com/be-io/mesh/client/golang/codec"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/test/proto"
-	"github.com/be-io/mesh/client/golang/types"
+	"github.com/opendatav/mesh/client/golang/codec"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/test/proto"
+	"github.com/opendatav/mesh/client/golang/types"
 	"testing"
 )
 

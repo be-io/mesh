@@ -9,7 +9,7 @@ package types
 
 import (
 	"fmt"
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"strings"
 )
 

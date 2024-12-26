@@ -16,7 +16,7 @@
 syntax = "proto3";
 
 package org.ppc.ptp;
-option go_package = "github.com/be-io/mesh/ptp";
+option go_package = "github.com/opendatav/mesh/ptp";
 option java_package = "io.bfia.ptp";
 
 // PTP Private transfer protocol

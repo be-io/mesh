@@ -8,7 +8,7 @@
 package types
 
 import (
-	"github.com/be-io/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/cause"
 	"time"
 )
 

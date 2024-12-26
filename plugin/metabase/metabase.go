@@ -9,10 +9,10 @@ package metabase
 
 import (
 	"context"
-	"github.com/be-io/mesh/client/golang/cause"
-	"github.com/be-io/mesh/client/golang/log"
-	"github.com/be-io/mesh/client/golang/plugin"
 	"github.com/dgraph-io/badger/v4"
+	"github.com/opendatav/mesh/client/golang/cause"
+	"github.com/opendatav/mesh/client/golang/log"
+	"github.com/opendatav/mesh/client/golang/plugin"
 	"github.com/timshannon/badgerhold/v4"
 )
 

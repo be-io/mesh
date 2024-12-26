@@ -8,12 +8,12 @@
 package cmd
 
 import (
-	_ "github.com/be-io/mesh/client/golang/proxy"
-	_ "github.com/be-io/mesh/container/node"
-	_ "github.com/be-io/mesh/container/operator"
-	_ "github.com/be-io/mesh/container/panel"
-	_ "github.com/be-io/mesh/container/proxy"
-	_ "github.com/be-io/mesh/container/server"
-	_ "github.com/be-io/mesh/proxy"
-	_ "github.com/be-io/mesh/ptp"
+	_ "github.com/opendatav/mesh/client/golang/proxy"
+	_ "github.com/opendatav/mesh/container/node"
+	_ "github.com/opendatav/mesh/container/operator"
+	_ "github.com/opendatav/mesh/container/panel"
+	_ "github.com/opendatav/mesh/container/proxy"
+	_ "github.com/opendatav/mesh/container/server"
+	_ "github.com/opendatav/mesh/proxy"
+	_ "github.com/opendatav/mesh/ptp"
 )

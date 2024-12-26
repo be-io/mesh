@@ -11,7 +11,7 @@
 Mesh TypeScript client develop kits.
 
 ```bash
-cargo install github.com/be-io/mesh/client/rust
+cargo install github.com/opendatav/mesh/client/rust
 ```
 
 ## Features

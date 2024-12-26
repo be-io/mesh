@@ -9,7 +9,7 @@ package types
 
 import (
 	"fmt"
-	"github.com/be-io/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/macro"
 	"testing"
 )
 

@@ -1,9 +1,9 @@
 {
   "name": "mesh",
   "version": "1.0.0",
-  "homepage": "https://github.com/be-io/mesh",
+  "homepage": "https://github.com/opendatav/mesh",
   "description": "A lightweight, distributed, relational network architecture for MPC",
-  "repository": "github.com/be-io/mesh",
+  "repository": "github.com/opendatav/mesh",
   "author": "coyzeng@gmail.com",
   "maintainers": [
     "coyzeng@gmail.com"

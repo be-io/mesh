@@ -9,14 +9,14 @@ package prsim
 
 import (
 	"fmt"
-	_ "github.com/be-io/mesh/client/golang/grpc"
-	"github.com/be-io/mesh/client/golang/macro"
-	"github.com/be-io/mesh/client/golang/mpc"
-	"github.com/be-io/mesh/client/golang/plugin"
-	"github.com/be-io/mesh/client/golang/prsim"
-	"github.com/be-io/mesh/client/golang/tool"
-	"github.com/be-io/mesh/client/golang/types"
-	"github.com/be-io/mesh/plugin/metabase"
+	_ "github.com/opendatav/mesh/client/golang/grpc"
+	"github.com/opendatav/mesh/client/golang/macro"
+	"github.com/opendatav/mesh/client/golang/mpc"
+	"github.com/opendatav/mesh/client/golang/plugin"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/tool"
+	"github.com/opendatav/mesh/client/golang/types"
+	"github.com/opendatav/mesh/plugin/metabase"
 	"testing"
 	"time"
 )

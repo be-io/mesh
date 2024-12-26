@@ -1,8 +1,8 @@
-module github.com/be-io/mesh/cars/operator
+module github.com/opendatav/mesh/cars/operator
 
 go 1.19
 
-require github.com/be-io/mesh/client/golang v0.0.0
+require github.com/opendatav/mesh/client/golang v0.0.0
 
 require (
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -19,4 +19,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/be-io/mesh/client/golang v0.0.0 => ../../client/golang
+replace github.com/opendatav/mesh/client/golang v0.0.0 => ../../client/golang
