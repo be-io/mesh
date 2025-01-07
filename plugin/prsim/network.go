@@ -9,6 +9,7 @@ package prsim
 
 import (
 	"context"
+	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
@@ -105,15 +106,25 @@ func (that *PRSINetwork) Refresh(ctx context.Context, routes []*types.Route) err
 	text, _ := aware.Codec.EncodeString(routes)
 	log.Info(ctx, "Network refresh event=%s", text)
 	for _, route := range routes {
-		if "" != route.HostCrt {
-			b, _ := pem.Decode([]byte(route.HostCrt))
+		if "" != route.HostRoot {
+			b, _ := pem.Decode([]byte(route.HostRoot))
 			if _, err = x509.ParseCertificate(b.Bytes); nil != err {
 				return cause.Error(err)
 			}
 		}
-		if "" != route.GuestCrt {
-			b, _ := pem.Decode([]byte(route.GuestCrt))
+		if "" != route.GuestRoot {
+			b, _ := pem.Decode([]byte(route.GuestRoot))
 			if _, err = x509.ParseCertificate(b.Bytes); nil != err {
+				return cause.Error(err)
+			}
+		}
+		if "" != route.HostCrt && "" != route.HostKey {
+			if _, err = tls.X509KeyPair([]byte(route.HostCrt), []byte(route.HostKey)); nil != err {
+				return cause.Error(err)
+			}
+		}
+		if "" != route.GuestCrt && "" != route.GuestKey {
+			if _, err = tls.X509KeyPair([]byte(route.GuestCrt), []byte(route.GuestKey)); nil != err {
 				return cause.Error(err)
 			}
 		}

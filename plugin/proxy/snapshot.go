@@ -18,6 +18,7 @@ import (
 	"github.com/traefik/paerser/types"
 	"github.com/traefik/traefik/v3/pkg/config/dynamic"
 	"github.com/traefik/traefik/v3/pkg/tls"
+	ttypes "github.com/traefik/traefik/v3/pkg/types"
 	"strings"
 	"time"
 )
@@ -392,12 +393,12 @@ func (that *SnapShot) withTransports(ctx context.Context) map[string]*dynamic.Se
 	for _, route := range routes {
 		pxy := tool.Anyone(mtypes.ParseURL(ctx, tool.Anyone(that.supervise(route), route.URC()).String()).GetP(), route.Proxy)
 		certification := route.GetCertificate(ctx).Override(defaultCts)
-		var roots []tls.FileOrContent
+		var roots []ttypes.FileOrContent
 		if "" != certification.HostRoot {
-			roots = append(roots, tls.FileOrContent(certification.HostRoot))
+			roots = append(roots, ttypes.FileOrContent(certification.HostRoot))
 		}
 		if "" != certification.GuestRoot {
-			roots = append(roots, tls.FileOrContent(certification.GuestRoot))
+			roots = append(roots, ttypes.FileOrContent(certification.GuestRoot))
 		}
 		transports[route.NodeId] = &dynamic.ServersTransport{
 			ServerName:         fmt.Sprintf("%s.%s.%s", that.env.NodeId, route.NodeId, mtypes.MeshDomain),
@@ -405,8 +406,8 @@ func (that *SnapShot) withTransports(ctx context.Context) map[string]*dynamic.Se
 			RootCAs:            roots,
 			Certificates: tls.Certificates{
 				{
-					CertFile: tls.FileOrContent(certification.GuestCrt),
-					KeyFile:  tls.FileOrContent(certification.GuestKey),
+					CertFile: ttypes.FileOrContent(certification.GuestCrt),
+					KeyFile:  ttypes.FileOrContent(certification.GuestKey),
 				},
 			},
 			MaxIdleConnsPerHost: 1,
@@ -434,14 +435,14 @@ func (that *SnapShot) withTLS(ctx context.Context) *dynamic.TLSConfiguration {
 	stores := map[string]tls.Store{
 		"default": {
 			DefaultCertificate: &tls.Certificate{
-				CertFile: tls.FileOrContent(defaultCts.HostCrt),
-				KeyFile:  tls.FileOrContent(defaultCts.HostKey),
+				CertFile: ttypes.FileOrContent(defaultCts.HostCrt),
+				KeyFile:  ttypes.FileOrContent(defaultCts.HostKey),
 			},
 		},
 		mtypes.LocalNodeId: {
 			DefaultCertificate: &tls.Certificate{
-				CertFile: tls.FileOrContent(defaultCts.HostCrt),
-				KeyFile:  tls.FileOrContent(defaultCts.HostKey),
+				CertFile: ttypes.FileOrContent(defaultCts.HostCrt),
+				KeyFile:  ttypes.FileOrContent(defaultCts.HostKey),
 			},
 		},
 	}
@@ -450,8 +451,8 @@ func (that *SnapShot) withTLS(ctx context.Context) *dynamic.TLSConfiguration {
 		certification := route.GetCertificate(ctx).Override(defaultCts)
 		stores[route.NodeId] = tls.Store{
 			DefaultCertificate: &tls.Certificate{
-				CertFile: tls.FileOrContent(certification.HostCrt),
-				KeyFile:  tls.FileOrContent(certification.HostKey),
+				CertFile: ttypes.FileOrContent(certification.HostCrt),
+				KeyFile:  ttypes.FileOrContent(certification.HostKey),
 			},
 		}
 		options[route.NodeId] = *tls.DefaultTLSOptions.DeepCopy()

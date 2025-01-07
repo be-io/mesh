@@ -5,4 +5,4 @@
  *
  */
 
-package golang
+package main

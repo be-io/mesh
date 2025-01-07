@@ -76,7 +76,7 @@ func IsLocalEnv(environ *types.Environ, nodeIds ...string) bool {
 		if strings.Index(lowerId, "jg") == 0 {
 			instId, err := types.FromInstID(lowerId)
 			if nil != err {
-				log.Error0("%s is not standard identity", nodeId)
+				log.Warn0("%s is not standard identity", nodeId)
 				continue
 			}
 			if instId.MatchNode(environ.NodeId) {

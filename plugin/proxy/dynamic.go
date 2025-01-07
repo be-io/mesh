@@ -19,6 +19,7 @@ import (
 	"github.com/traefik/traefik/v3/pkg/provider"
 	"github.com/traefik/traefik/v3/pkg/safe"
 	"github.com/traefik/traefik/v3/pkg/tls"
+	"github.com/traefik/traefik/v3/pkg/types"
 )
 
 func init() {
@@ -124,7 +125,7 @@ func (that *meshNetGraph) stringify(ctx context.Context, message *dynamic.Messag
 		if copyConf.TLS.Options != nil {
 			cleanedOptions := make(map[string]tls.Options, len(copyConf.TLS.Options))
 			for name, option := range copyConf.TLS.Options {
-				option.ClientAuth.CAFiles = []tls.FileOrContent{}
+				option.ClientAuth.CAFiles = []types.FileOrContent{}
 				cleanedOptions[name] = option
 			}
 			copyConf.TLS.Options = cleanedOptions
@@ -138,7 +139,7 @@ func (that *meshNetGraph) stringify(ctx context.Context, message *dynamic.Messag
 	if copyConf.HTTP != nil {
 		for _, transport := range copyConf.HTTP.ServersTransports {
 			transport.Certificates = tls.Certificates{}
-			transport.RootCAs = []tls.FileOrContent{}
+			transport.RootCAs = []types.FileOrContent{}
 		}
 	}
 	if jsonConf, err := aware.Codec.EncodeString(copyConf); nil != err {

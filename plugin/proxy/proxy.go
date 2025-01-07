@@ -40,9 +40,9 @@ import (
 	pcp "github.com/traefik/traefik/v3/pkg/tcp"
 	traefiktls "github.com/traefik/traefik/v3/pkg/tls"
 	"github.com/traefik/traefik/v3/pkg/tracing"
-	"github.com/traefik/traefik/v3/pkg/tracing/jaeger"
 	"github.com/traefik/traefik/v3/pkg/types"
 	"github.com/traefik/traefik/v3/pkg/udp"
+	"go.opentelemetry.io/otel/trace"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"net/http"
@@ -286,8 +286,8 @@ func (that *meshProxy) setupServer(ctx context.Context, staticConfiguration *sta
 	dialerManager := pcp.NewDialerManager(spiffeX509Source)
 	acmeHTTPHandler := that.getHTTPChallengeHandler(acmeProviders, httpChallengeProvider)
 	managerFactory := service.NewManagerFactory(*staticConfiguration, routinesPool, metricsRegistry, roundTripperManager, acmeHTTPHandler)
-	traceHandler := setupTracing(ctx, staticConfiguration.Tracing)
-	chainBuilder := middleware.NewChainBuilder(metricsRegistry, accessLog, traceHandler)
+	tracer, tracerCloser := setupTracing(ctx, staticConfiguration.Tracing)
+	chainBuilder := middleware.NewChainBuilder(metricsRegistry, accessLog, tracer)
 	routerFactory := server.NewRouterFactory(*staticConfiguration, managerFactory, tlsManager, chainBuilder, pluginBuilder, metricsRegistry, dialerManager)
 	// Watcher
 	watcher := server.NewConfigurationWatcher(routinesPool, providerAggregator, that.getDefaultsEntrypoints(ctx, staticConfiguration), "internal")
@@ -346,7 +346,7 @@ func (that *meshProxy) setupServer(ctx context.Context, staticConfiguration *sta
 			}
 		}
 	})
-	return server.NewServer(routinesPool, serverEntryPointsTCP, serverEntryPointsUDP, watcher, chainBuilder, accessLog), nil
+	return server.NewServer(routinesPool, serverEntryPointsTCP, serverEntryPointsUDP, watcher, chainBuilder, accessLog, tracerCloser), nil
 }
 
 func (that *meshProxy) getHTTPChallengeHandler(acmeProviders []*acme.Provider, httpChallengeProvider http.Handler) http.Handler {
@@ -505,68 +505,15 @@ func (that *meshProxy) appendCertMetric(gauge gokitmetrics.Gauge, certificate *x
 	gauge.With(labels...).Set(notAfter)
 }
 
-func setupTracing(ctx context.Context, conf *static.Tracing) *tracing.Tracing {
-	if conf == nil {
-		return nil
+func setupTracing(ctx context.Context, conf *static.Tracing) (trace.Tracer, io.Closer) {
+	if nil == conf {
+		return nil, nil
 	}
-	var backend tracing.Backend
-
-	if conf.Jaeger != nil {
-		backend = conf.Jaeger
-	}
-	if conf.Zipkin != nil {
-		if backend != nil {
-			log.Error(ctx, "Multiple tracing backend are not supported: cannot create Zipkin backend.")
-		} else {
-			backend = conf.Zipkin
-		}
-	}
-	if conf.Datadog != nil {
-		if backend != nil {
-			log.Error(ctx, "Multiple tracing backend are not supported: cannot create Datadog backend.")
-		} else {
-			backend = conf.Datadog
-		}
-	}
-	if conf.Instana != nil {
-		if backend != nil {
-			log.Error(ctx, "Multiple tracing backend are not supported: cannot create Instana backend.")
-		} else {
-			backend = conf.Instana
-		}
-	}
-	if conf.Haystack != nil {
-		if backend != nil {
-			log.Error(ctx, "Multiple tracing backend are not supported: cannot create Haystack backend.")
-		} else {
-			backend = conf.Haystack
-		}
-	}
-	if conf.Elastic != nil {
-		if backend != nil {
-			log.Error(ctx, "Multiple tracing backend are not supported: cannot create Elastic backend.")
-		} else {
-			backend = conf.Elastic
-		}
-	}
-	if conf.OpenTelemetry != nil {
-		if backend != nil {
-			log.Error(ctx, "Tracing backends are all mutually exclusive: cannot create OpenTelemetry backend.")
-		} else {
-			backend = conf.OpenTelemetry
-		}
-	}
-	if backend == nil {
-		log.Debug(ctx, "Could not initialize tracing, using Jaeger by default")
-		defaultBackend := &jaeger.Config{}
-		defaultBackend.SetDefaults()
-		backend = defaultBackend
+	tracer, closer, err := tracing.NewTracing(conf)
+	if err != nil {
+		log.Warn(ctx, "Unable to create tracer")
+		return nil, nil
 	}
 
-	traceHandler, err := tracing.NewTracing(conf.ServiceName, conf.SpanNameLimit, backend)
-	if nil != err {
-		log.Warn(ctx, "Unable to create tracer: %v", err)
-		return nil
-	}
-	return traceHandler
+	return tracer, closer
 }

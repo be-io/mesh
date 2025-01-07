@@ -208,6 +208,9 @@ func (that *RouteCertificate) Override(nc *RouteCertificate) *RouteCertificate {
 }
 
 func (that *RouteCertificate) Decode(ctx context.Context, certification string, decoder codec.Codec) {
+	if "" == certification {
+		return
+	}
 	if _, err := decoder.DecodeString(certification, that); nil != err {
 		log.Error(ctx, "Decode certification %s with unexpected cause, %s", certification, err.Error())
 	}
