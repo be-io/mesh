@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.3
 
-FROM golang:1.20.7-alpine AS build
+FROM golang:alpine AS build
 
 ARG flags
 
