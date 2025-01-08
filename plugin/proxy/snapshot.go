@@ -401,7 +401,8 @@ func (that *SnapShot) withTransports(ctx context.Context) map[string]*dynamic.Se
 			roots = append(roots, ttypes.FileOrContent(certification.GuestRoot))
 		}
 		transports[route.NodeId] = &dynamic.ServersTransport{
-			ServerName:         fmt.Sprintf("%s.%s.%s", that.env.NodeId, route.NodeId, mtypes.MeshDomain),
+			// Some server has no strict domain signed certificates
+			// ServerName:         fmt.Sprintf("%s-%s.%s", that.env.NodeId, route.NodeId, "icbc.com"),
 			InsecureSkipVerify: proxy.InsecureSkip,
 			RootCAs:            roots,
 			Certificates: tls.Certificates{

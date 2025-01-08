@@ -180,24 +180,24 @@ func (that *RouteCertificate) Override0(nc *Route) *RouteCertificate {
 
 func (that *RouteCertificate) Override(nc *RouteCertificate) *RouteCertificate {
 	cw := new(RouteCertificate)
-	if nil != nc && "" != nc.HostRoot {
+	if nil != nc && "" == that.HostRoot {
 		cw.HostRoot = nc.HostRoot
 	} else {
 		cw.HostRoot = that.HostRoot
 	}
-	if nil != nc && "" != nc.GuestRoot {
+	if nil != nc && "" == that.GuestRoot {
 		cw.GuestRoot = nc.GuestRoot
 	} else {
 		cw.GuestRoot = that.GuestRoot
 	}
-	if nil != nc && "" != nc.HostKey && "" != nc.HostCrt {
+	if nil != nc && "" == that.HostKey && "" == that.HostCrt {
 		cw.HostKey = nc.HostKey
 		cw.HostCrt = nc.HostCrt
 	} else {
 		cw.HostKey = that.HostKey
 		cw.HostCrt = that.HostCrt
 	}
-	if nil != nc && "" != nc.GuestKey && "" != nc.GuestCrt {
+	if nil != nc && "" == that.GuestKey && "" == that.GuestCrt {
 		cw.GuestKey = nc.GuestKey
 		cw.GuestCrt = nc.GuestCrt
 	} else {

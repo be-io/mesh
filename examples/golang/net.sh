@@ -184,12 +184,51 @@ curl --location 'http://yl.com:7304/v1/interconn/net/refresh' \
     "node_id": "IC075",
     "inst_id": "IC075",
     "inst_name": "互联互通工商银行节点IC075",
-    "address": "172.16.24.81:31124",
+    "address": "icbc.com:17304",
     "host_crt": $AB_SERVER_CRT,
     "host_key": $AB_SERVER_KEY,
     "host_root": $A_ROOT_CRT,
     "guest_crt": $AB_CLIENT_CRT,
     "guest_key": $AB_CLIENT_KEY,
     "guest_root": $B_ROOT_CRT
+}
+     ')"
+
+
+# 初始化节点信息
+curl --location 'http://icbc.com:17304/v1/interconn/node/refresh' \
+     --header 'Content-Type: application/json' \
+     --data "$(jq -n --arg B_ROOT_CRT "$B_ROOT_CRT" --arg B_ROOT_KEY "$B_ROOT_KEY" '
+{
+    "version": "1.0.0",
+    "node_id": "IC075",
+    "inst_id": "JG075",
+    "inst_name": "互联互通工商银行节点IC075",
+    "root_crt": $B_ROOT_CRT,
+    "root_key": $B_ROOT_KEY
+}
+     ')"
+
+# 组网
+curl --location 'http://icbc.com:17304/v1/interconn/net/refresh' \
+     --header 'Content-Type: application/json' \
+     --data "$(jq -n \
+     --arg BA_SERVER_CRT "$BA_SERVER_CRT" \
+     --arg BA_SERVER_KEY "$BA_SERVER_KEY" \
+     --arg B_ROOT_CRT "$B_ROOT_CRT" \
+     --arg BA_CLIENT_CRT "$BA_CLIENT_CRT" \
+     --arg BA_CLIENT_KEY "$BA_CLIENT_KEY" \
+     --arg A_ROOT_CRT "$A_ROOT_CRT" '
+{
+    "node_id": "YL070",
+    "inst_id": "JG070",
+    "inst_name": "互联互通中国银联节点YL070",
+    "address": "yl.com:7304",
+    "host_crt": $BA_SERVER_CRT,
+    "host_key": $BA_SERVER_KEY,
+    "host_root": $B_ROOT_CRT,
+    "guest_crt": $BA_CLIENT_CRT,
+    "guest_key": $BA_CLIENT_KEY,
+    "guest_root": $A_ROOT_CRT
 }
      ')"
