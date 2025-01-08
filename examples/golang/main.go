@@ -12,55 +12,81 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/pem"
+	"fmt"
 	"github.com/opendatav/mesh/client/golang/cause"
 	"github.com/opendatav/mesh/client/golang/log"
 	"github.com/opendatav/mesh/client/golang/mpc"
+	"github.com/opendatav/mesh/client/golang/prsim"
+	"github.com/opendatav/mesh/client/golang/tool"
 	"github.com/opendatav/mesh/ptp"
+	"github.com/spf13/pflag"
 	"io"
 	"net/http"
 )
 
 func main() {
+	var address, nodeId, suit string
+	pflag.StringVarP(&address, "address", "a", "127.0.0.1:7304", "")
+	pflag.StringVarP(&nodeId, "nodeId", "n", "YL070", "")
+	pflag.StringVarP(&suit, "suit", "s", "A", "")
+	pflag.Parse()
 	ctx := mpc.Context()
-	if err := do(ctx); nil != err {
+	if err := do(ctx, &Suit{
+		NodeId: nodeId,
+		Addr:   address,
+		CA:     tool.Ternary("A" == suit, BRootCrt, ARootCrt),
+		CRT:    tool.Ternary("A" == suit, ABClientCrt, BAClientCrt),
+		KEY:    tool.Ternary("A" == suit, ABClientKey, BAClientKey),
+	}); nil != err {
 		log.Error(ctx, "%s", err)
 	}
 }
 
-func do(ctx context.Context) error {
-	v, _ := pem.Decode([]byte(ARootCrt))
-	x, err := x509.ParseCertificate(v.Bytes)
-	if nil != err {
-		return cause.Error(err)
-	}
-	log.Info(ctx, "%s", x.PermittedDNSDomains)
-	keys, err := tls.X509KeyPair([]byte(BAClientCrt), []byte(BAClientKey))
+type Suit struct {
+	NodeId string
+	Addr   string
+	CA     string
+	CRT    string
+	KEY    string
+}
+
+func do(ctx context.Context, suit *Suit) error {
+	keys, err := tls.X509KeyPair([]byte(suit.CRT), []byte(suit.KEY))
 	if nil != err {
 		return cause.Error(err)
 	}
 	ca := x509.NewCertPool()
-	ca.AppendCertsFromPEM([]byte(ARootCrt))
+	ca.AppendCertsFromPEM([]byte(suit.CA))
 	cc := http.Client{Transport: &http.Transport{TLSClientConfig: &tls.Config{
 		InsecureSkipVerify: false,
 		MinVersion:         tls.VersionTLS12,
 		RootCAs:            ca,
 		Certificates:       []tls.Certificate{keys},
 	}}}
-	payload := ptp.PushInbound{
-		Topic:    "",
-		Payload:  []byte(""),
+	push := &ptp.PushInbound{
+		Topic:    "1",
+		Payload:  []byte("1"),
 		Metadata: map[string]string{},
+	}
+	ib, err := ptp.Encode(push, "application/json")
+	if nil != err {
+		return cause.Error(err)
+	}
+	payload := &ptp.Inbound{
+		Metadata: map[string]string{},
+		Payload:  ib,
 	}
 	buf, err := ptp.Encode(payload, "application/json")
 	if nil != err {
 		return cause.Error(err)
 	}
-	r, err := http.NewRequest(http.MethodPost, "https://yl.com:7304/v1/interconn/chan/invoke", bytes.NewBuffer(buf))
+	r, err := http.NewRequest(http.MethodPost, fmt.Sprintf("https://%s/v1/interconn/chan/invoke", suit.Addr), bytes.NewBuffer(buf))
 	if nil != err {
 		return cause.Error(err)
 	}
-	r.Header.Set("x-ptp-target-node-id", "IC075")
+	prsim.ContentType.SetHeader(r.Header, "application/json")
+	prsim.MeshTargetNodeId.SetHeader(r.Header, suit.NodeId)
+	prsim.MeshURI.SetHeader(r.Header, "/v1/interconn/chan/push")
 	s, err := cc.Do(r)
 	if nil != err {
 		return cause.Error(err)
@@ -115,6 +141,47 @@ JSH7tgzhMwIgfsXRUyhrQUbxx1Bx7fBpYSTAXH2q4zjtMMeYdwMVFM8=
 MHcCAQEEIETzmtzBBT36x0DENWoNNbw0nEbzTkbsZlQhpGineNi8oAoGCCqGSM49
 AwEHoUQDQgAExRD7cUTn2me8vyZiyFn1ylBAScgLdP2PwyJFBprzlT10lX7B9o2A
 E0mF0Z7eZGWiCjs4Tv7Uxf6idZwUiOW0oA==
+-----END ECDSA PRIVATE KEY-----
+	`
+	BRootCrt = `
+-----BEGIN CERTIFICATE-----
+MIICXDCCAgOgAwIBAgIQU4WNU06u8BdJ+uYIWPpDlzAKBggqhkjOPQQDAjBkMQsw
+CQYDVQQGEwJDTjELMAkGA1UECBMCWkoxCzAJBgNVBAcTAkhaMREwDwYDVQQKEwhp
+Y2JjLmNvbTERMA8GA1UECxMIaWNiYy5jb20xFTATBgNVBAMMDOW3peWVhumTtuih
+jDAgFw0yNTAxMDcwMzM2MDhaGA8yNTI1MDEwNzAzMzYwOFowZDELMAkGA1UEBhMC
+Q04xCzAJBgNVBAgTAlpKMQswCQYDVQQHEwJIWjERMA8GA1UEChMIaWNiYy5jb20x
+ETAPBgNVBAsTCGljYmMuY29tMRUwEwYDVQQDDAzlt6XllYbpk7booYwwWTATBgcq
+hkjOPQIBBggqhkjOPQMBBwNCAARnuX9+b8VNDBgnFfOsexxdh7ZUfyfN+y1zRlyC
+oFj/+8BqqlN4OIRi3d0Bjz20nHge8PfIstOLo1RpnL28Xg20o4GUMIGRMA4GA1Ud
+DwEB/wQEAwICvDAnBgNVHSUEIDAeBggrBgEFBQcDAQYIKwYBBQUHAwIGCCsGAQUF
+BwMBMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFMMsIrLOGJwbXe3g2MP6D+6e
+x1+1MCYGA1UdEQQfMB2CCGljYmMuY29tgQtjYUBpY2JjLmNvbYcErBAYUTAKBggq
+hkjOPQQDAgNHADBEAiB7JjMol4qJPizD8kgEocRyvOMcxJbaFpwLjZsHtxpAtgIg
+SvIdFT+xUSTZ8mLB0AYcxIl6stTLN64XvCuHRUaYq9s=
+-----END CERTIFICATE-----
+	`
+	ABClientCrt = `
+-----BEGIN CERTIFICATE-----
+MIICWzCCAgGgAwIBAgIQJa0atDW0R2vD7KG17PdhwTAKBggqhkjOPQQDAjBgMQsw
+CQYDVQQGEwJDTjELMAkGA1UECBMCWkoxCzAJBgNVBAcTAkhaMQ8wDQYDVQQKEwZ5
+bC5jb20xDzANBgNVBAsTBnlsLmNvbTEVMBMGA1UEAwwM5Lit5Zu96ZO26IGUMCAX
+DTI1MDEwNzAzNDM0MloYDzI1MjUwMTA3MDM0MzQyWjBpMQswCQYDVQQGEwJDTjEL
+MAkGA1UECBMCWkoxCzAJBgNVBAcTAkhaMQ8wDQYDVQQKEwZ5bC5jb20xDzANBgNV
+BAsTBnlsLmNvbTEeMBwGA1UEAwwV5Lit5Zu96ZO26IGU5a6i5oi356uvMFkwEwYH
+KoZIzj0CAQYIKoZIzj0DAQcDQgAE7HRdnKQTFaPUQzN1iJDCmURKHHpAYPMljpoH
+MgwBVJ0ZQVBKKEUm2FGYBwt6a/dc3BEIE7UfT9KJ31mfzuZbvKOBkTCBjjAOBgNV
+HQ8BAf8EBAMCArwwJwYDVR0lBCAwHgYIKwYBBQUHAwEGCCsGAQUFBwMCBggrBgEF
+BQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFNXjJRuDhTjfu/bZmvFpQenB
+WbfuMCQGA1UdEQQdMBuCBnlsLmNvbYELY2FAaWNiYy5jb22HBKwQGFEwCgYIKoZI
+zj0EAwIDSAAwRQIhAOooxjnapqr82Muu5CPzC5E496HCMYlWPVRDLcbIzWilAiAB
+Q/pBCQEwLLg9LJjw6ESilHf96TNkTJSCBJ+CI4TfoQ==
+-----END CERTIFICATE-----
+	`
+	ABClientKey = `
+-----BEGIN ECDSA PRIVATE KEY-----
+MHcCAQEEIMIYoXzLQQwJNXIS7fyCjJtRaSY383oLmgjdmLrtgxEroAoGCCqGSM49
+AwEHoUQDQgAE7HRdnKQTFaPUQzN1iJDCmURKHHpAYPMljpoHMgwBVJ0ZQVBKKEUm
+2FGYBwt6a/dc3BEIE7UfT9KJ31mfzuZbvA==
 -----END ECDSA PRIVATE KEY-----
 	`
 )
